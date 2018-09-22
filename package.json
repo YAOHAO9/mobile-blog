@@ -7,11 +7,17 @@
     "build": "rm -rf ./build && tsc",
     "watch": "rm -rf ./build && tsc --watch",
     "check": "./node_modules/.bin/tslint --project ./tsconfig.json && npm run build",
-    "test": "jest"
+    "test": "jest",
+    "ios": "react-native run-ios",
+    "android": "react-native run-android"
   },
   "dependencies": {
+    "@types/react-navigation": "^2.0.21",
     "react": "16.5.0",
-    "react-native": "0.57.0"
+    "react-native": "0.57.0",
+    "react-native-elements": "^0.19.1",
+    "react-native-vector-icons": "^5.0.0",
+    "react-navigation": "^2.16.0"
   },
   "devDependencies": {
     "@types/jest": "^23.3.2",
