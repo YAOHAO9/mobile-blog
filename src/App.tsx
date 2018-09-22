@@ -6,7 +6,7 @@
  * @flow
  */
 
-import React, { Component } from 'react';
+import * as React from 'react';
 import { Platform, StyleSheet, Text, View } from 'react-native';
 
 const instructions = Platform.select({
@@ -16,8 +16,16 @@ const instructions = Platform.select({
     'Shake or press menu button for dev menu',
 });
 
-type Props = {};
-export default class App extends Component<Props> {
+interface Props {
+}
+
+interface State {
+}
+
+export default class APP extends React.Component<Props, State> {
+  constructor(props: Props) {
+    super(props)
+  }
   render() {
     return (
       <View style={styles.container}>
