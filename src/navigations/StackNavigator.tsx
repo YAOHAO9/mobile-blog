@@ -14,9 +14,9 @@ const App = createStackNavigator({
   },
   Tab: {
     screen: Tab,
-    navigationOptions() {
-      return { title: "Tab" }
-    }
+    // navigationOptions() {
+    //   return { title: "Tab" }
+    // }
   },
 });
 

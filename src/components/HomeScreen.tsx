@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { Platform, StyleSheet, Text } from 'react-native';
-import { Button } from 'react-native-elements'
+import { Platform, StyleSheet, Text, Button } from 'react-native';
+// import { Button } from 'react-native-elements'
 import Col from './layout/Col';
 const instructions = Platform.select({
     ios: 'Home',
@@ -29,9 +29,6 @@ export default class APP extends React.Component<Props, State> {
                 <Text style={styles.instructions}>{instructions}</Text>
                 <Button
                     onPress={() => navigate('Tab', { name: 'Jane' })}
-                    raised
-                    buttonStyle={{ backgroundColor: '#125', borderRadius: 100 }}
-                    textStyle={{ textAlign: 'center' }}
                     title={`Welcome to\nReact Native Elements`}
                 />
             </Col>

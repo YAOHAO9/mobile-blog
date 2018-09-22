@@ -1,18 +1,22 @@
 import * as React from 'react';
-import { View, FlexStyle } from 'react-native';
+import { FlexStyle } from 'react-native';
 import { Text } from 'react-native-elements';
+import Col from '../components/layout/Col';
 
 
 export default class Blog extends React.Component<FlexStyle> {
+  static navigationOptions = {
+    title: 'Home',
+  };
   public constructor(props: FlexStyle) {
     super(props);
   }
 
   public render() {
     return (
-      <View >
+      <Col >
         <Text>Blog</Text>
-      </View>
+      </Col>
     );
   }
 }

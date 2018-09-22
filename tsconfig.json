@@ -5,11 +5,10 @@
     "module": "commonjs",
     "moduleResolution": "node",
     "outDir": "build",
-    "rootDir": "src",
     "allowSyntheticDefaultImports": true,
     "noImplicitAny": false,
     "preserveConstEnums": true,
-    "allowJs": false,
+    "allowJs": true,
     "sourceMap": true,
     "noImplicitReturns": true,
     "noUnusedParameters": true,
@@ -23,19 +22,24 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
   },
-  "include": [
-    "src/**/*"
-  ],
   "filesGlob": [
-    "typings/index.d.ts",
+    "types/*.d.ts",
     "src/**/*.ts",
     "src/**/*.tsx",
     "src/**/*.json"
   ],
-  "types": [],
+  "types": [
+    "react",
+    "react-native",
+    "jest",
+    "nodes",
+  ],
   "exclude": [
+    "android",
+    "ios",
     "build",
-    "node_modules"
+    "node_modules",
+    "__tests__",
   ],
   "compileOnSave": false
 }

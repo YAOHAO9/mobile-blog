@@ -13,10 +13,11 @@ const Tab = createBottomTabNavigator({
     navigationOptions() {
       return {
         title: "Moment",
-        tabBarIcon() {
+        tabBarIcon({ tintColor }) {
           return <Icon
             name="alien"
             size={25}
+            color={tintColor}
           />;
         }
       }
@@ -27,8 +28,12 @@ const Tab = createBottomTabNavigator({
     navigationOptions() {
       return {
         title: "Blog",
-        tabBarIcon() {
-          return <Icon name={'book-open-variant'} size={25} />;
+        tabBarIcon({ tintColor }) {
+          return <Icon
+            name={'book-open-variant'}
+            size={25}
+            color={tintColor}
+          />;
         }
       }
     }
@@ -38,8 +43,12 @@ const Tab = createBottomTabNavigator({
     navigationOptions() {
       return {
         title: "Chat",
-        tabBarIcon() {
-          return <Icon name={'forum-outline'} size={25} />;
+        tabBarIcon({ tintColor }) {
+          return <Icon
+            name={'forum-outline'}
+            size={25}
+            color={tintColor}
+          />;
         }
       }
     }
