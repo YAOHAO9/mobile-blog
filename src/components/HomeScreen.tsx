@@ -29,7 +29,7 @@ export default class APP extends React.Component<Props, State> {
                 <Text style={styles.instructions}>{instructions}</Text>
                 <Button
                     onPress={() => navigate('Tab', { name: 'Jane' })}
-                    title={`Welcome to\nReact Native Elements`}
+                    title={`没有颜色真的很不爽`}
                 />
             </Col>
         );
