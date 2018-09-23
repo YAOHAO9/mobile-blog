@@ -1,10 +1,9 @@
 import * as React from 'react';
-import { FlexStyle } from 'react-native';
-import { Text } from 'react-native-elements';
+import { FlexStyle, Text } from 'react-native';
 import Row from '../components/layout/Row';
 
 
-export default class Chat extends React.Component<FlexStyle> {
+export default class ChatPage extends React.Component<FlexStyle> {
   static navigationOptions = {
     title: 'Home',
   };

@@ -1,10 +1,9 @@
 import * as React from 'react';
-import { FlexStyle } from 'react-native';
-import { Text } from 'react-native-elements';
+import { FlexStyle, Text } from 'react-native';
 import Col from '../components/layout/Col';
 
 
-export default class Blog extends React.Component<FlexStyle> {
+export default class BlogPage extends React.Component<FlexStyle> {
   static navigationOptions = {
     title: 'Home',
   };

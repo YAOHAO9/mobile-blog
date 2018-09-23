@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Platform, StyleSheet, Text, Button } from 'react-native';
-// import { Button } from 'react-native-elements'
 import Col from './layout/Col';
 const instructions = Platform.select({
     ios: 'Home',

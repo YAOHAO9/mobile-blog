@@ -2,10 +2,10 @@ import * as React from 'react';
 import {
   createBottomTabNavigator
 } from 'react-navigation';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Moment from '../pages/Moment';
 import Blog from '../pages/Blog';
 import Chat from '../pages/Chat';
+import Icon from '../components/Icon';
 
 const Tab = createBottomTabNavigator({
   Moment: {
@@ -15,7 +15,7 @@ const Tab = createBottomTabNavigator({
         title: "Moment",
         tabBarIcon({ tintColor }) {
           return <Icon
-            name="alien"
+            name="checkbox-multiple-blank-circle-outline"
             size={25}
             color={tintColor}
           />;
