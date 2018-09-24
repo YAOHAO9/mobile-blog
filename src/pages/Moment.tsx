@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { getRequest } from '../services/RequestService';
 import Moment from '../models/Moment.model';
-import { Image, View, ScrollView, Text, StyleSheet } from 'react-native';
+import { Image, View, ScrollView, Text, StyleSheet, FlatList, RefreshControl, Alert } from 'react-native';
 import Config from '../configs/config';
 import Avatar from '../components/Avatar';
 import Row from '../components/layout/Row';
@@ -15,13 +15,16 @@ import Blank from '../components/layout/Blank';
 
 interface State {
   moments: Moment[],
+  refreshing: boolean;
+  noMore: boolean;
+  loadingMore: boolean;
 }
 
 export default class MomentPage extends React.Component<null, State> {
 
   public constructor(props) {
     super(props);
-    this.state = { moments: [] }
+    this.state = { moments: [], refreshing: false, noMore: false, loadingMore: false }
   }
 
   public componentWillMount() {
@@ -30,59 +33,79 @@ export default class MomentPage extends React.Component<null, State> {
 
   public render() {
     return (
-      <ScrollView>
-        {
-          this.state.moments.map(moment => {
-            return (
-              <View key={moment.id} style={{ borderRadius: 6, flex: 1, backgroundColor: '#fff', marginHorizontal: 5, marginVertical: 4, paddingBottom: 10 }}>
-                <Row alignItems={undefined}>
-                  <Wrap margin={3}>
-                    <Avatar></Avatar>
-                  </Wrap>
-                  <Col>
-                    <Row>
-                      <Col alignItems={undefined}>
-                        <Text style={styles.name}>{moment.user.name}</Text>
-                        <Text style={styles.date}>{fromNow(moment.createdAt)}</Text>
-                      </Col>
-                      <Wrap width={36} margin={3} alignItems={'center'}>
-                        <Icon
-                          name="chevron-down"
-                          size={36}
-                          color={Colors.lightGray}
-                        ></Icon>
-                      </Wrap>
-                    </Row>
-                    {!!moment.content && <Wrap marginRight={15} alignSelf={'flex-start'}>
-                      <Text>{moment.content}</Text>
-                    </Wrap>
-                    }
-                  </Col>
-                </Row>
-                <Row >
-                  <Blank></Blank>
-                  <Col flex={5}>
-                    {this.getMomentImageGrid(moment)}
-                  </Col>
-                  <Blank></Blank>
-                </Row>
-              </View>
-            )
-          })
+      <FlatList
+        refreshControl={
+          <RefreshControl
+            refreshing={this.state.refreshing}
+            onRefresh={() => this.getMoments(true)}
+          ></RefreshControl>
         }
-      </ScrollView>
+        data={this.state.moments}
+        keyExtractor={(item) => item.id + ''}
+        renderItem={(data) => this.renderMomentItem(data.item)}
+        onEndReached={() => this.getMoments()}
+        onEndReachedThreshold={0.3}
+      >
+      </FlatList>
     );
   }
 
-  public async getMoments() {
-    const moments: Moment[] = await getRequest('/api/moment?sort=-createdAt&count=30&offset=0')
+  public async getMoments(isRefreshing = false) {
+    if ((!isRefreshing && this.state.noMore) || this.state.loadingMore) {
+      return
+    }
+    await this.setState({ loadingMore: true })
+    const offset = isRefreshing ? 0 : this.state.moments.length
+    let moments: Moment[] = await getRequest(`/api/moment?sort=-createdAt&count=10&offset=${offset}`)
     moments.forEach(moment => {
       moment.content = moment.content.replace(/<br\/>/g, '\n').replace(/<.*?>/g, '');
     })
-    this.setState({ moments })
+    const noMore = moments.length > 0 ? false : true
+    if (!isRefreshing) {
+      moments = [...this.state.moments, ...moments]
+    }
+    this.setState({ moments, refreshing: false, noMore, loadingMore: false })
   }
 
-  public getMomentImageGrid(moment) {
+  public renderMomentItem(moment: Moment) {
+    return (
+      <View key={moment.id} style={{ borderRadius: 6, flex: 1, backgroundColor: '#fff', marginHorizontal: 5, marginVertical: 4, paddingBottom: 10 }}>
+        <Row alignItems={undefined}>
+          <Wrap margin={3}>
+            <Avatar archive={{ id: moment.user.avator }}></Avatar>
+          </Wrap>
+          <Col>
+            <Row>
+              <Col alignItems={undefined}>
+                <Text style={styles.name}>{moment.user.name}</Text>
+                <Text style={styles.date}>{fromNow(moment.createdAt)}</Text>
+              </Col>
+              <Wrap width={36} margin={3} alignItems={'center'}>
+                <Icon
+                  name="chevron-down"
+                  size={36}
+                  color={Colors.lightGray}
+                ></Icon>
+              </Wrap>
+            </Row>
+            {!!moment.content && <Wrap marginRight={15} alignSelf={'flex-start'}>
+              <Text>{moment.content}</Text>
+            </Wrap>
+            }
+          </Col>
+        </Row>
+        <Row >
+          <Blank></Blank>
+          <Col flex={5}>
+            {this.renderMomentImageGrid(moment)}
+          </Col>
+          <Blank></Blank>
+        </Row>
+      </View>
+    )
+  }
+
+  public renderMomentImageGrid(moment) {
     let sumOfColumn = 1;
     if (moment.images.length > 9) {
       sumOfColumn = 4
@@ -114,15 +137,9 @@ export default class MomentPage extends React.Component<null, State> {
                 return (<Blank key={index}></Blank>)
               }
               return (
-                <Square
-                  key={column}
-                  paddingPercent={2}
-                >
-                  <Square
-                    borderRadiusPercent={5}
-                  >
+                <Square key={column} paddingPercent={2}>
+                  <Square borderRadiusPercent={5}>
                     <Image
-
                       style={{ flex: 1 }}
                       source={{ uri: Config.serverUrl + '/api/archive/' + column }}
                     />

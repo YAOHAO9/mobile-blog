@@ -14,7 +14,7 @@ export default class Avatar extends React.Component<Props> {
 
   public render() {
     const archive = this.props.archive;
-    if (!archive) {
+    if (!archive || !archive.id) {
       return (
         <Image
           style={styles.avatar}
