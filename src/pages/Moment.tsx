@@ -70,7 +70,7 @@ export default class MomentPage extends React.Component<null, State> {
 
   public renderMomentItem(moment: Moment) {
     return (
-      <View key={moment.id} style={{ borderRadius: 6, flex: 1, backgroundColor: '#fff', marginHorizontal: 5, marginVertical: 1, paddingBottom: 10 }}>
+      <View key={moment.id} style={styles.itemWrap}>
         <Row alignItems={undefined}>
           <Wrap margin={3}>
             <Avatar archive={{ id: moment.user.avator }}></Avatar>
@@ -156,6 +156,7 @@ export default class MomentPage extends React.Component<null, State> {
 }
 
 const styles = StyleSheet.create({
+  itemWrap: { borderRadius: 6, flex: 1, backgroundColor: '#fff', marginHorizontal: 5, marginVertical: 1, paddingBottom: 10 },
   name: {
     color: Colors.black,
     fontSize: 14

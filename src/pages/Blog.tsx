@@ -1,10 +1,14 @@
 import * as React from 'react';
-import { Text, View, FlatList, RefreshControl } from 'react-native';
+import { Text, View, FlatList, RefreshControl, TouchableOpacity, StyleSheet } from 'react-native';
 import Row from '../components/layout/Row';
 import Colors from '../variables/Colors';
 import Article from '../models/Article.model';
 import { getRequest } from '../services/RequestService';
 import { fromNow } from '../services/ToolService';
+
+interface Props {
+  navigation: any;
+}
 
 interface State {
   articles: Article[],
@@ -13,9 +17,9 @@ interface State {
   loadingMore: boolean;
 }
 
-export default class BlogPage extends React.Component<null, State> {
+export default class BlogPage extends React.Component<Props, State> {
 
-  public constructor(props) {
+  public constructor(props: Props) {
     super(props);
     this.state = {
       articles: [],
@@ -65,14 +69,25 @@ export default class BlogPage extends React.Component<null, State> {
 
   public renderArticleItem(article: Article) {
     return (
-      <View style={{ padding: 10, marginVertical: 1, borderRadius: 6, backgroundColor: Colors.white }}>
-        <Text style={{ color: Colors.black, fontSize: 16 }}>{article.title}</Text>
-        <Text style={{ color: Colors.gray, fontSize: 14 }}>...</Text>
-        <Row flex={undefined} justifyContent={undefined}>
-          <Text style={{ flex: 1, color: Colors.gray, fontSize: 14 }}>YAOHAO</Text>
-          <Text style={{ color: Colors.gray, fontSize: 12 }}>{fromNow(article.createdAt)}</Text>
-        </Row>
-      </View>
+      <TouchableOpacity onPress={() => this.props.navigation.navigate('BlogDetail', { articleId: article.id })}>
+        <View style={styles.itemWrap}>
+          <Text style={styles.title}>{article.title}</Text>
+          <Text style={styles.description}>...</Text>
+          <Row flex={undefined} justifyContent={undefined}>
+            <Text style={styles.author}>YAOHAO</Text>
+            <Text style={styles.date}>{fromNow(article.createdAt)}</Text>
+          </Row>
+        </View>
+      </TouchableOpacity>
     )
   }
 }
+
+
+const styles = StyleSheet.create({
+  itemWrap: { padding: 10, marginVertical: 1, borderRadius: 6, backgroundColor: Colors.white },
+  title: { color: Colors.black, fontSize: 16 },
+  description: { color: Colors.gray, fontSize: 14 },
+  author: { flex: 1, color: Colors.gray, fontSize: 14 },
+  date: { color: Colors.gray, fontSize: 12 }
+});

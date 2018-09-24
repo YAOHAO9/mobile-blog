@@ -4,20 +4,28 @@ import {
 
 import HomeScreen from '../components/HomeScreen'
 import Tab from './TabNavigator';
+import BlogDetail from '../pages/BlogDetail';
 
-const App = createStackNavigator({
-  Tab: {
-    screen: Tab,
-    navigationOptions() {
-      return { title: "Tab" }
-    }
+const App = createStackNavigator(
+  {
+    Home: {
+      screen: HomeScreen,
+      navigationOptions() {
+        return { title: "Home" }
+      }
+    },
+    Tab: {
+      screen: Tab,
+      navigationOptions() {
+        return { title: "Tab" }
+      }
+    },
+    BlogDetail: {
+      screen: BlogDetail
+    },
   },
-  Home: {
-    screen: HomeScreen,
-    navigationOptions() {
-      return { title: "Home" }
-    }
-  },
-});
+  {
+    initialRouteName: 'Tab'
+  });
 
 export default App

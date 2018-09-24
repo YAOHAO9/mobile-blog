@@ -27,7 +27,7 @@ export default class APP extends React.Component<Props, State> {
                 <Text style={styles.instructions}>To get started, edit App.js</Text>
                 <Text style={styles.instructions}>{instructions}</Text>
                 <Button
-                    onPress={() => navigate('Tab', { name: 'Jane' })}
+                    onPress={() => navigate('BlogDetail', { articleId: '100' })}
                     title={`没有颜色真的很不爽`}
                 />
             </Col>
