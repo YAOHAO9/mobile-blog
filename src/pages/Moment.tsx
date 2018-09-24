@@ -10,6 +10,8 @@ import Col from '../components/layout/Col';
 import Colors from '../variables/Colors';
 import Icon from '../components/Icon';
 import Square from '../components/layout/Square';
+import { fromNow } from '../services/ToolService';
+import Blank from '../components/layout/Blank';
 
 interface State {
   moments: Moment[],
@@ -41,7 +43,7 @@ export default class MomentPage extends React.Component<null, State> {
                     <Row>
                       <Col alignItems={undefined}>
                         <Text style={styles.name}>{moment.user.name}</Text>
-                        <Text style={styles.date}>{moment.createdAt}</Text>
+                        <Text style={styles.date}>{fromNow(moment.createdAt)}</Text>
                       </Col>
                       <Wrap width={36} margin={3} alignItems={'center'}>
                         <Icon
@@ -57,9 +59,13 @@ export default class MomentPage extends React.Component<null, State> {
                     }
                   </Col>
                 </Row>
-                <Wrap paddingHorizontal={30}>
-                  {this.getMomentImageGrid(moment)}
-                </Wrap>
+                <Row >
+                  <Blank></Blank>
+                  <Col flex={5}>
+                    {this.getMomentImageGrid(moment)}
+                  </Col>
+                  <Blank></Blank>
+                </Row>
               </View>
             )
           })
@@ -90,20 +96,23 @@ export default class MomentPage extends React.Component<null, State> {
     let imageRows = [];
     for (var i = 0; i <= (moment.images.length - 1) / sumOfColumn; i++) {
       var row = [];
-      for (
-        var j = i * sumOfColumn;
-        j < (i + 1) * sumOfColumn && j < moment.images.length;
-        j++
-      ) {
+      for (var j = i * sumOfColumn; j < (i + 1) * sumOfColumn; j++) {
+        if (j >= moment.images.length) {
+          row.push(null);
+          continue;
+        }
         row.push(moment.images[j]);
       }
       imageRows.push(row);
     }
     return imageRows.map((row) => {
       return (
-        <Row key={row}>
+        <Row key={row} >
           {
-            row.map(column => {
+            row.map((column, index) => {
+              if (!column) {
+                return (<Blank key={index}></Blank>)
+              }
               return (
                 <Square
                   key={column}
