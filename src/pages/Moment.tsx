@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { getRequest } from '../services/RequestService';
 import Moment from '../models/Moment.model';
-import { Image, View, ScrollView, Text, StyleSheet, FlatList, RefreshControl, Alert } from 'react-native';
+import { Image, View, Text, StyleSheet, FlatList, RefreshControl } from 'react-native';
 import Config from '../configs/config';
 import Avatar from '../components/Avatar';
 import Row from '../components/layout/Row';
@@ -34,6 +34,7 @@ export default class MomentPage extends React.Component<null, State> {
   public render() {
     return (
       <FlatList
+        style={{ marginVertical: 4 }}
         refreshControl={
           <RefreshControl
             refreshing={this.state.refreshing}
@@ -50,7 +51,7 @@ export default class MomentPage extends React.Component<null, State> {
     );
   }
 
-  public async getMoments(isRefreshing = false) {
+  public async getMoments(isRefreshing: boolean = false) {
     if ((!isRefreshing && this.state.noMore) || this.state.loadingMore) {
       return
     }
@@ -69,7 +70,7 @@ export default class MomentPage extends React.Component<null, State> {
 
   public renderMomentItem(moment: Moment) {
     return (
-      <View key={moment.id} style={{ borderRadius: 6, flex: 1, backgroundColor: '#fff', marginHorizontal: 5, marginVertical: 4, paddingBottom: 10 }}>
+      <View key={moment.id} style={{ borderRadius: 6, flex: 1, backgroundColor: '#fff', marginHorizontal: 5, marginVertical: 1, paddingBottom: 10 }}>
         <Row alignItems={undefined}>
           <Wrap margin={3}>
             <Avatar archive={{ id: moment.user.avator }}></Avatar>
