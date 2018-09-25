@@ -1,14 +1,14 @@
 import * as React from 'react';
-import { View, FlexStyle } from 'react-native';
+import { View, ViewStyle } from 'react-native';
 
-export default class Wrap extends React.Component<FlexStyle> {
-  public constructor(props: FlexStyle) {
+export default class Wrap extends React.Component<ViewStyle> {
+  public constructor(props: ViewStyle) {
     super(props);
   }
 
   public render() {
     return (
-      <View style={this.props}>
+      <View style={this.props} >
         {this.props.children}
       </View>
     );

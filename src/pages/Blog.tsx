@@ -5,6 +5,7 @@ import Colors from '../variables/Colors';
 import Article from '../models/Article.model';
 import { getRequest } from '../services/RequestService';
 import { fromNow } from '../services/ToolService';
+import Page from '../components/layout/Page';
 
 interface Props {
   navigation: any;
@@ -35,21 +36,23 @@ export default class BlogPage extends React.Component<Props, State> {
 
   public render() {
     return (
-      <FlatList
-        style={{ marginVertical: 4 }}
-        refreshControl={
-          <RefreshControl
-            refreshing={this.state.refreshing}
-            onRefresh={() => this.getArticles(true)}
-          ></RefreshControl>
-        }
-        data={this.state.articles}
-        keyExtractor={(item) => item.id + ''}
-        renderItem={(data) => this.renderArticleItem(data.item)}
-        onEndReached={() => this.getArticles()}
-        onEndReachedThreshold={0.3}
-      >
-      </FlatList>
+      <Page navigation={this.props.navigation} customHeader={true}>
+        <FlatList
+          style={{ marginVertical: 4 }}
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={() => this.getArticles(true)}
+            ></RefreshControl>
+          }
+          data={this.state.articles}
+          keyExtractor={(item) => item.id + ''}
+          renderItem={(data) => this.renderArticleItem(data.item)}
+          onEndReached={() => this.getArticles()}
+          onEndReachedThreshold={0.3}
+        >
+        </FlatList>
+      </Page>
     );
   }
 

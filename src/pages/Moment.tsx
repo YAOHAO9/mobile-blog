@@ -12,6 +12,11 @@ import Icon from '../components/Icon';
 import Square from '../components/layout/Square';
 import { fromNow } from '../services/ToolService';
 import Blank from '../components/layout/Blank';
+import Page from '../components/layout/Page';
+
+interface Props {
+  navigation: any;
+}
 
 interface State {
   moments: Moment[],
@@ -20,9 +25,9 @@ interface State {
   loadingMore: boolean;
 }
 
-export default class MomentPage extends React.Component<null, State> {
+export default class MomentPage extends React.Component<Props, State> {
 
-  public constructor(props) {
+  public constructor(props: Props) {
     super(props);
     this.state = { moments: [], refreshing: false, noMore: false, loadingMore: false }
   }
@@ -33,21 +38,23 @@ export default class MomentPage extends React.Component<null, State> {
 
   public render() {
     return (
-      <FlatList
-        style={{ marginVertical: 4 }}
-        refreshControl={
-          <RefreshControl
-            refreshing={this.state.refreshing}
-            onRefresh={() => this.getMoments(true)}
-          ></RefreshControl>
-        }
-        data={this.state.moments}
-        keyExtractor={(item) => item.id + ''}
-        renderItem={(data) => this.renderMomentItem(data.item)}
-        onEndReached={() => this.getMoments()}
-        onEndReachedThreshold={0.3}
-      >
-      </FlatList>
+      <Page navigation={this.props.navigation} customHeader={true}>
+        <FlatList
+          style={{ marginVertical: 4 }}
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={() => this.getMoments(true)}
+            ></RefreshControl>
+          }
+          data={this.state.moments}
+          keyExtractor={(item) => item.id + ''}
+          renderItem={(data) => this.renderMomentItem(data.item)}
+          onEndReached={() => this.getMoments()}
+          onEndReachedThreshold={0.3}
+        >
+        </FlatList>
+      </Page>
     );
   }
 

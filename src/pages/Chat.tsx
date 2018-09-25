@@ -1,21 +1,30 @@
 import * as React from 'react';
-import { FlexStyle, Text } from 'react-native';
-import Row from '../components/layout/Row';
+import { Text } from 'react-native';
+import Col from '../components/layout/Col';
+import Page from '../components/layout/Page';
 
 
-export default class ChatPage extends React.Component<FlexStyle> {
-  static navigationOptions = {
-    title: 'Home',
-  };
-  public constructor(props: FlexStyle) {
+interface Props {
+  navigation: any;
+}
+
+export default class ChatPage extends React.Component<Props> {
+
+  public constructor(props: Props) {
     super(props);
   }
 
   public render() {
     return (
-      <Row >
-        <Text>Chat</Text>
-      </Row>
+      <Page navigation={this.props.navigation} customHeader={true}>
+        <Col justifyContent={undefined} alignItems={undefined}>
+          <Text>Chat</Text>
+          <Text>Chat</Text>
+          <Text>Chat</Text>
+          <Text>Chat</Text>
+          <Text>Chat</Text>
+        </Col>
+      </Page>
     );
   }
 }

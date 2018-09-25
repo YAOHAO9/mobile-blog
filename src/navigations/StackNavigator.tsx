@@ -17,7 +17,7 @@ const App = createStackNavigator(
     Tab: {
       screen: Tab,
       navigationOptions() {
-        return { title: "Tab" }
+        return { title: "Tab", header: null }
       }
     },
     BlogDetail: {

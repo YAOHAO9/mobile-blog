@@ -4,6 +4,7 @@ import Article from '../models/Article.model';
 import { getRequest } from '../services/RequestService';
 import ArticleContent from '../models/ArticleContent.model';
 import Config from '../configs/config';
+import Page from '../components/layout/Page';
 
 interface Props {
   navigation: any;
@@ -37,19 +38,21 @@ export default class BlogDetail extends React.Component<Props, State> {
   public render() {
     const articleId = this.props.navigation.getParam('articleId', 100)
     return (
-      <ScrollView style={{ flex: 1 }}>
-        <WebView
-          originWhitelist={['*']}
-          source={{ uri: `${Config.serverUrl}/api/article/detailHtml/${articleId}` }}
-          style={{ height: this.state.webViewHeight }}
-          ref={(webView) => this.webView = webView}
-          onLoadEnd={() => this.webViewLoaded()}
-          onMessage={(e) => {
-            this.handleMessage(e)
-          }}
-          javaScriptEnabled={true}
-        />
-      </ScrollView >
+      <Page navigation={this.props.navigation} customHeader={false}>
+        <ScrollView style={{ flex: 1 }}>
+          <WebView
+            originWhitelist={['*']}
+            source={{ uri: `${Config.serverUrl}/api/article/detailHtml/${articleId}` }}
+            style={{ height: this.state.webViewHeight }}
+            ref={(webView) => this.webView = webView}
+            onLoadEnd={() => this.webViewLoaded()}
+            onMessage={(e) => {
+              this.handleMessage(e)
+            }}
+            javaScriptEnabled={true}
+          />
+        </ScrollView >
+      </Page>
     );
   }
 
