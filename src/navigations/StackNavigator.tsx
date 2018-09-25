@@ -5,6 +5,8 @@ import {
 import HomeScreen from '../components/HomeScreen'
 import Tab from './TabNavigator';
 import BlogDetail from '../pages/BlogDetail';
+import ChatDetail from '../pages/ChatDetail';
+import AddChatUser from '../pages/AddChatUser';
 
 const App = createStackNavigator(
   {
@@ -17,12 +19,17 @@ const App = createStackNavigator(
     Tab: {
       screen: Tab,
       navigationOptions() {
-        return { title: "Tab", header: null }
+        return { header: null }
       }
     },
-    BlogDetail: {
-      screen: BlogDetail
-    },
+    BlogDetail,
+    ChatDetail,
+    AddChatUser: {
+      screen: AddChatUser,
+      navigationOptions() {
+        return { title: "Add chat user" }
+      }
+    }
   },
   {
     initialRouteName: 'Tab'

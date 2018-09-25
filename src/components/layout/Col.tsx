@@ -11,7 +11,7 @@ export default class Col extends React.Component<FlexStyle> {
     return (
       <View
         style={Object.assign(
-          { display: 'flex', flexDirection: 'column', flex: 1, justifyContent: 'center', alignItems: 'center' },
+          { display: 'flex', flexDirection: 'column', flex: 1 },
           this.props
         )}
       >

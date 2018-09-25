@@ -31,12 +31,12 @@ export default class BlogDetail extends React.Component<Props, State> {
   }
 
   public componentWillMount() {
-    const articleId = this.props.navigation.getParam('articleId', 100)
+    const articleId = this.props.navigation.getParam('articleId')
     this.getArticleDetail(articleId);
   }
 
   public render() {
-    const articleId = this.props.navigation.getParam('articleId', 100)
+    const articleId = this.props.navigation.getParam('articleId')
     return (
       <Page navigation={this.props.navigation} customHeader={false}>
         <ScrollView style={{ flex: 1 }}>
