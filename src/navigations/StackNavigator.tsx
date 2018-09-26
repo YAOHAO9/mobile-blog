@@ -8,7 +8,7 @@ import BlogDetail from '../pages/BlogDetail';
 import ChatDetail from '../pages/ChatDetail';
 import AddChatUser from '../pages/AddChatUser';
 
-const App = createStackNavigator(
+const RootNavigator = createStackNavigator(
   {
     Home: {
       screen: HomeScreen,
@@ -35,4 +35,4 @@ const App = createStackNavigator(
     initialRouteName: 'Tab'
   });
 
-export default App
+export default RootNavigator
