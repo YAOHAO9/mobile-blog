@@ -14,9 +14,10 @@ import { fromNow } from '../services/ToolService';
 import Blank from '../components/layout/Blank';
 import Page from '../components/layout/Page';
 import Header from '../components/Header';
+import { NavigationScreenProp } from 'react-navigation';
 
 interface Props {
-  navigation: any;
+  navigation: NavigationScreenProp<null>;
 }
 
 interface State {

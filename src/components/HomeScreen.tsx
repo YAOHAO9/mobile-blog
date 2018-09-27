@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Platform, StyleSheet, Text, Button } from 'react-native';
 import Col from './layout/Col';
+import { NavigationScreenProp } from 'react-navigation';
 const instructions = Platform.select({
     ios: 'Home',
     android:
@@ -9,7 +10,7 @@ const instructions = Platform.select({
 });
 
 interface Props {
-    navigation: any;
+    navigation: NavigationScreenProp<null>;
 }
 
 interface State {

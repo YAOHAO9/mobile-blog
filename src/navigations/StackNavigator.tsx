@@ -1,5 +1,5 @@
 import {
-  createStackNavigator,
+  createStackNavigator, NavigationStackScreenOptions,
 } from 'react-navigation';
 
 import HomeScreen from '../components/HomeScreen'
@@ -26,8 +26,11 @@ const RootNavigator = createStackNavigator(
     ChatDetail,
     AddChatUser: {
       screen: AddChatUser,
-      navigationOptions() {
-        return { title: "Add chat user" }
+      navigationOptions(): NavigationStackScreenOptions {
+        return {
+          title: "Add chat user",
+          headerBackTitle: null,
+        }
       }
     }
   },

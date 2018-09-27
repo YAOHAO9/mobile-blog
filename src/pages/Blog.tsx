@@ -7,9 +7,11 @@ import { getRequest } from '../services/RequestService';
 import { fromNow } from '../services/ToolService';
 import Page from '../components/layout/Page';
 import Header from '../components/Header';
+import { NavigationScreenProp } from 'react-navigation';
 
 interface Props {
-  navigation: any;
+  navigation: NavigationScreenProp<null>;
+
 }
 
 interface State {

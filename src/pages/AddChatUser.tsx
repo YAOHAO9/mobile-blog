@@ -8,9 +8,10 @@ import Icon from '../components/Icon';
 import Colors from '../variables/Colors';
 import User from '../models/User.model';
 import { getRequest } from '../services/RequestService';
+import { NavigationScreenProp } from 'react-navigation';
 
 interface Props {
-  navigation: any;
+  navigation: NavigationScreenProp<null, { title: string, exclude: string }>;
 }
 
 interface State {
@@ -58,8 +59,9 @@ export default class AddChatUser extends React.Component<Props, State> {
   }
 
   public renderUserItem(user: User) {
+    this.props.navigation.getParam('title')
     return (
-      <TouchableOpacity onPress={() => this.props.navigation.navigate('Add chat user', { userId: user.id })}>
+      <TouchableOpacity onPress={() => this.props.navigation.navigate('ChatDetail', { userId: user.id })}>
         <Wrap backgroundColor={Colors.white} borderRadius={6} marginTop={2}>
           <Row flex={undefined} justifyContent={undefined}>
             <Wrap margin={5}>

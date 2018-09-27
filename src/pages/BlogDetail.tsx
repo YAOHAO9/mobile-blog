@@ -5,9 +5,10 @@ import { getRequest } from '../services/RequestService';
 import ArticleContent from '../models/ArticleContent.model';
 import Config from '../configs/config';
 import Page from '../components/layout/Page';
+import { NavigationScreenProp } from 'react-navigation';
 
 interface Props {
-  navigation: any;
+  navigation: NavigationScreenProp<null>;
 }
 
 interface State {

@@ -2,9 +2,10 @@ import * as React from 'react';
 import { StatusBar, StatusBarProps, Platform, View } from 'react-native';
 import Wrap from './Wrap';
 import Colors from '../../variables/Colors';
+import { NavigationScreenProp } from 'react-navigation';
 
 interface Props extends StatusBarProps {
-  navigation: any;
+  navigation: NavigationScreenProp<null>;
   customHeader: boolean;
 }
 

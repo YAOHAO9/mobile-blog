@@ -10,10 +10,11 @@ import User from '../models/User.model';
 import { getRequest } from '../services/RequestService';
 import Col from '../components/layout/Col';
 import Header from '../components/Header';
+import { NavigationScreenProp } from 'react-navigation';
 
 
 interface Props {
-  navigation: any;
+  navigation: NavigationScreenProp<null>;
 }
 
 interface State {

@@ -2,13 +2,15 @@ import * as React from 'react';
 import { Text } from 'react-native';
 import { getRequest } from '../services/RequestService';
 import Page from '../components/layout/Page';
-import Chat from '../models/Chat.model';
+import User from '../models/User.model';
+import { NavigationScreenProp } from 'react-navigation';
 
 interface Props {
-  navigation: any;
+  navigation: NavigationScreenProp<null>;
 }
 
 interface State {
+  receiver: User
 }
 
 export default class ChatDetail extends React.Component<Props, State> {
@@ -20,24 +22,27 @@ export default class ChatDetail extends React.Component<Props, State> {
   public constructor(props: Props) {
     super(props);
     this.state = {
+      receiver: new User()
     }
   }
 
   public componentWillMount() {
-    this.getChatList();
+    this.getReceiver()
+  }
+
+  public async getReceiver() {
+    const userId = this.props.navigation.getParam('userId')
+    const receiver = await getRequest(`/api/user/${userId}`)
+    this.props.navigation.setParams({ title: receiver.name })
+    this.setState({ receiver })
   }
 
   public render() {
-    const userId = this.props.navigation.getParam('userId')
     return (
       <Page navigation={this.props.navigation} customHeader={false}>
-        <Text>{userId}</Text>
+        <Text>{this.state.receiver.name}</Text>
       </Page>
     );
   }
 
-  public async getChatList() {
-    const chatList: Chat = await getRequest(`/api/chat/find?session=${'0-0'}`);
-    this.setState({ articleContent: chatList.content })
-  }
 }
