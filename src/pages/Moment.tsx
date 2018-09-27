@@ -21,7 +21,7 @@ interface Props {
 }
 
 interface State {
-  moments: Moment[],
+  moments: Moment[];
   refreshing: boolean;
   noMore: boolean;
   loadingMore: boolean;
@@ -31,7 +31,7 @@ export default class MomentPage extends React.Component<Props, State> {
 
   public constructor(props: Props) {
     super(props);
-    this.state = { moments: [], refreshing: false, noMore: false, loadingMore: false }
+    this.state = { moments: [], refreshing: false, noMore: false, loadingMore: false };
   }
 
   public componentWillMount() {
@@ -41,7 +41,7 @@ export default class MomentPage extends React.Component<Props, State> {
   public render() {
     return (
       <Page navigation={this.props.navigation} customHeader={true}>
-        <Header title={"Moment"}></Header>
+        <Header title={'Moment'}></Header>
         <FlatList
           style={{ marginVertical: 4 }}
           refreshControl={
@@ -63,19 +63,19 @@ export default class MomentPage extends React.Component<Props, State> {
 
   public async getMoments(isRefreshing: boolean = false) {
     if ((!isRefreshing && this.state.noMore) || this.state.loadingMore) {
-      return
+      return;
     }
-    await this.setState({ loadingMore: true })
-    const offset = isRefreshing ? 0 : this.state.moments.length
-    let moments: Moment[] = await getRequest(`/api/moment?sort=-createdAt&count=10&offset=${offset}`)
+    await this.setState({ loadingMore: true });
+    const offset = isRefreshing ? 0 : this.state.moments.length;
+    let moments: Moment[] = await getRequest(`/api/moment?sort=-createdAt&count=10&offset=${offset}`);
     moments.forEach(moment => {
       moment.content = moment.content.replace(/<br\/>/g, '\n').replace(/<.*?>/g, '');
-    })
-    const noMore = moments.length > 0 ? false : true
+    });
+    const noMore = moments.length > 0 ? false : true;
     if (!isRefreshing) {
-      moments = [...this.state.moments, ...moments]
+      moments = [...this.state.moments, ...moments];
     }
-    this.setState({ moments, refreshing: false, noMore, loadingMore: false })
+    this.setState({ moments, refreshing: false, noMore, loadingMore: false });
   }
 
   public renderMomentItem(moment: Moment) {
@@ -93,7 +93,7 @@ export default class MomentPage extends React.Component<Props, State> {
               </Col>
               <Wrap width={36} margin={3} alignItems={'center'}>
                 <Icon
-                  name="chevron-down"
+                  name='chevron-down'
                   size={36}
                   color={Colors.lightGray}
                 ></Icon>
@@ -113,24 +113,24 @@ export default class MomentPage extends React.Component<Props, State> {
           <Blank></Blank>
         </Row>
       </View>
-    )
+    );
   }
 
   public renderMomentImageGrid(moment) {
     let sumOfColumn = 1;
     if (moment.images.length > 9) {
-      sumOfColumn = 4
+      sumOfColumn = 4;
     } else if (moment.images.length > 4) {
-      sumOfColumn = 3
+      sumOfColumn = 3;
     } else if (moment.images.length > 1) {
-      sumOfColumn = 2
-    } else if (moment.images.length == 1) {
-      sumOfColumn = 1
+      sumOfColumn = 2;
+    } else if (moment.images.length === 1) {
+      sumOfColumn = 1;
     }
     let imageRows = [];
-    for (var i = 0; i <= (moment.images.length - 1) / sumOfColumn; i++) {
-      var row = [];
-      for (var j = i * sumOfColumn; j < (i + 1) * sumOfColumn; j++) {
+    for (let i = 0; i <= (moment.images.length - 1) / sumOfColumn; i++) {
+      let row = [];
+      for (let j = i * sumOfColumn; j < (i + 1) * sumOfColumn; j++) {
         if (j >= moment.images.length) {
           row.push(null);
           continue;
@@ -145,7 +145,7 @@ export default class MomentPage extends React.Component<Props, State> {
           {
             row.map((column, index) => {
               if (!column) {
-                return (<Blank key={index}></Blank>)
+                return (<Blank key={index}></Blank>);
               }
               return (
                 <Square key={column} paddingPercent={2}>
@@ -156,12 +156,12 @@ export default class MomentPage extends React.Component<Props, State> {
                     />
                   </Square>
                 </Square>
-              )
+              );
             })
           }
         </Row>
-      )
-    })
+      );
+    });
   }
 }
 

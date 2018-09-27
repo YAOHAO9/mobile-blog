@@ -16,7 +16,7 @@ interface State {
 
 export default class APP extends React.Component<Props, State> {
     constructor(props: Props) {
-        super(props)
+        super(props);
     }
     render() {
         return (

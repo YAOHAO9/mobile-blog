@@ -2,7 +2,7 @@ import {
   createStackNavigator, NavigationStackScreenOptions,
 } from 'react-navigation';
 
-import HomeScreen from '../components/HomeScreen'
+import HomeScreen from '../components/HomeScreen';
 import Tab from './TabNavigator';
 import BlogDetail from '../pages/BlogDetail';
 import ChatDetail from '../pages/ChatDetail';
@@ -13,13 +13,13 @@ const RootNavigator = createStackNavigator(
     Home: {
       screen: HomeScreen,
       navigationOptions() {
-        return { title: "Home" }
+        return { title: 'Home' };
       }
     },
     Tab: {
       screen: Tab,
       navigationOptions() {
-        return { header: null }
+        return { header: null };
       }
     },
     BlogDetail,
@@ -28,14 +28,14 @@ const RootNavigator = createStackNavigator(
       screen: AddChatUser,
       navigationOptions(): NavigationStackScreenOptions {
         return {
-          title: "Add chat user",
+          title: 'Add chat user',
           headerBackTitle: null,
-        }
+        };
       }
     }
   },
   {
-    initialRouteName: 'Tab'
+    initialRouteName: 'ChatDetail'
   });
 
-export default RootNavigator
+export default RootNavigator;

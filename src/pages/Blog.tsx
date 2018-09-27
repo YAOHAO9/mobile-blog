@@ -15,7 +15,7 @@ interface Props {
 }
 
 interface State {
-  articles: Article[],
+  articles: Article[];
   refreshing: boolean;
   noMore: boolean;
   loadingMore: boolean;
@@ -30,7 +30,7 @@ export default class BlogPage extends React.Component<Props, State> {
       refreshing: false,
       noMore: false,
       loadingMore: false,
-    }
+    };
   }
 
   public componentWillMount() {
@@ -40,7 +40,7 @@ export default class BlogPage extends React.Component<Props, State> {
   public render() {
     return (
       <Page navigation={this.props.navigation} customHeader={true}>
-        <Header title={"Blog"}></Header>
+        <Header title={'Blog'}></Header>
         <FlatList
           style={{ marginVertical: 4 }}
           refreshControl={
@@ -62,16 +62,16 @@ export default class BlogPage extends React.Component<Props, State> {
 
   public async getArticles(isRefreshing: boolean = false) {
     if ((!isRefreshing && this.state.noMore) || this.state.loadingMore) {
-      return
+      return;
     }
-    await this.setState({ loadingMore: true })
-    const offset = isRefreshing ? 0 : this.state.articles.length
-    let articles: Article[] = await getRequest(`/api/article?sort=-createdAt&count=10&offset=${offset}`)
-    const noMore = articles.length > 0 ? false : true
+    await this.setState({ loadingMore: true });
+    const offset = isRefreshing ? 0 : this.state.articles.length;
+    let articles: Article[] = await getRequest(`/api/article?sort=-createdAt&count=10&offset=${offset}`);
+    const noMore = articles.length > 0 ? false : true;
     if (!isRefreshing) {
-      articles = [...this.state.articles, ...articles]
+      articles = [...this.state.articles, ...articles];
     }
-    this.setState({ articles, refreshing: false, noMore, loadingMore: false })
+    this.setState({ articles, refreshing: false, noMore, loadingMore: false });
   }
 
   public renderArticleItem(article: Article) {
@@ -86,7 +86,7 @@ export default class BlogPage extends React.Component<Props, State> {
           </Row>
         </View>
       </TouchableOpacity>
-    )
+    );
   }
 }
 

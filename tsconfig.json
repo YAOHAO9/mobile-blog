@@ -22,6 +22,9 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
   },
+  "include": [
+    "src/**/*"
+  ],
   "filesGlob": [
     "types/*.d.ts",
     "src/**/*.ts",

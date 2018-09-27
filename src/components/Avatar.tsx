@@ -4,7 +4,7 @@ import Config from '../configs/config';
 import Archive from '../models/Archive.model';
 
 interface Props {
-  archive?: Partial<Archive>,
+  archive?: Partial<Archive>;
 }
 
 export default class Avatar extends React.Component<Props> {

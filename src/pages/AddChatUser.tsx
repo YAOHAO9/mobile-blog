@@ -15,7 +15,7 @@ interface Props {
 }
 
 interface State {
-  users: User[],
+  users: User[];
   refreshing: boolean;
   noMore: boolean;
   loadingMore: boolean;
@@ -29,7 +29,7 @@ export default class AddChatUser extends React.Component<Props, State> {
       refreshing: false,
       noMore: false,
       loadingMore: false,
-    }
+    };
   }
 
   public componentWillMount() {
@@ -59,7 +59,7 @@ export default class AddChatUser extends React.Component<Props, State> {
   }
 
   public renderUserItem(user: User) {
-    this.props.navigation.getParam('title')
+    this.props.navigation.getParam('title');
     return (
       <TouchableOpacity onPress={() => this.props.navigation.navigate('ChatDetail', { userId: user.id })}>
         <Wrap backgroundColor={Colors.white} borderRadius={6} marginTop={2}>
@@ -69,29 +69,29 @@ export default class AddChatUser extends React.Component<Props, State> {
             </Wrap>
             <Text style={{ flex: 1 }}>{user.name}</Text>
             <Icon
-              name="chevron-right"
+              name='chevron-right'
               size={25}
               color={Colors.lightGray}
             />
           </Row>
         </Wrap>
       </TouchableOpacity>
-    )
+    );
   }
 
   public async getChatedUserList(isRefreshing: boolean = false) {
     if ((!isRefreshing && this.state.noMore) || this.state.loadingMore) {
-      return
+      return;
     }
-    await this.setState({ loadingMore: true })
-    const offset = isRefreshing ? 0 : this.state.users.length
-    const exclude = this.props.navigation.getParam('exclude')
-    let users: User[] = await getRequest(`/api/user/getChatUserList?sort=-createdAt&count=10&offset=${offset}&exclude=${exclude}`)
-    const noMore = users.length > 0 ? false : true
+    await this.setState({ loadingMore: true });
+    const offset = isRefreshing ? 0 : this.state.users.length;
+    const exclude = this.props.navigation.getParam('exclude');
+    let users: User[] = await getRequest(`/api/user/getChatUserList?sort=-createdAt&count=10&offset=${offset}&exclude=${exclude}`);
+    const noMore = users.length > 0 ? false : true;
     if (!isRefreshing) {
-      users = [...this.state.users, ...users]
+      users = [...this.state.users, ...users];
     }
-    this.setState({ users, refreshing: false, noMore, loadingMore: false })
+    this.setState({ users, refreshing: false, noMore, loadingMore: false });
   }
 }
 

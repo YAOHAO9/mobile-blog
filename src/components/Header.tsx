@@ -19,10 +19,10 @@ export default class Header extends React.Component<Props> {
 
   public render() {
     return (
-      <View style={{ height: 48, backgroundColor: Colors.headerBgColor, paddingHorizontal: 10, position: "relative" }}>
+      <View style={{ height: 48, backgroundColor: Colors.headerBgColor, paddingHorizontal: 10, position: 'relative' }}>
         <Row>
           {this.renderLeft()}
-          <View style={{ position: "absolute", top: 0, bottom: 0, right: 0, left: 0, zIndex: 1 }}>
+          <View style={{ position: 'absolute', top: 0, bottom: 0, right: 0, left: 0, zIndex: 1 }}>
             <Row>
               {this.renderCenter()}
             </Row>
@@ -30,28 +30,28 @@ export default class Header extends React.Component<Props> {
           {this.renderRight()}
         </Row>
       </View>
-    )
+    );
   }
   public renderLeft() {
     if (this.props.left) {
-      return this.props.left
+      return this.props.left;
     } else {
-      return (<View style={{ flex: 1 }}></View>)
+      return (<View style={{ flex: 1 }}></View>);
     }
   }
   public renderCenter() {
     if (this.props.center) {
-      return this.props.center
+      return this.props.center;
     } else {
-      return <Text style={{ flex: 1, textAlign: "center", fontSize: 20, color: Colors.black, alignSelf: "center" }}>{this.props.title}</Text>
+      return <Text style={{ flex: 1, textAlign: 'center', fontSize: 20, color: Colors.black, alignSelf: 'center' }}>{this.props.title}</Text>;
     }
   }
 
   public renderRight() {
     if (this.props.right) {
-      return this.props.right
+      return this.props.right;
     } else {
-      return (<Avatar archive={{ id: this.props.user.avator }}></Avatar>)
+      return (<Avatar archive={{ id: this.props.user.avator }}></Avatar>);
     }
   }
 }

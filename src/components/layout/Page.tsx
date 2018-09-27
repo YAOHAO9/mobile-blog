@@ -18,8 +18,8 @@ export default class Page extends React.Component<Props> {
   }
 
   public componentWillMount() {
-    if (Platform.OS !== "android") {
-      return
+    if (Platform.OS !== 'android') {
+      return;
     }
     this.willFocusListener = this.props.navigation.addListener('willFocus',
       (_) => {
@@ -34,8 +34,8 @@ export default class Page extends React.Component<Props> {
   }
 
   public componentWillUnmount() {
-    this.willFocusListener && this.willFocusListener.remove()
-    this.willBlurListener && this.willBlurListener.remove()
+    this.willFocusListener && this.willFocusListener.remove();
+    this.willBlurListener && this.willBlurListener.remove();
   }
 
   public renderCustomBar() {
@@ -49,7 +49,7 @@ export default class Page extends React.Component<Props> {
         />
         <Wrap backgroundColor={this.props.backgroundColor || Colors.slightWhite} height={StatusBar.currentHeight || 24}></Wrap>
       </View>
-    )
+    );
   }
 
   public render() {

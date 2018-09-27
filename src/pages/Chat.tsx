@@ -18,7 +18,7 @@ interface Props {
 }
 
 interface State {
-  users: extendedUser[],
+  users: extendedUser[];
   refreshing: boolean;
   noMore: boolean;
   loadingMore: boolean;
@@ -39,7 +39,7 @@ export default class ChatPage extends React.Component<Props, State> {
       refreshing: false,
       noMore: false,
       loadingMore: false,
-    }
+    };
   }
 
   public componentWillMount() {
@@ -49,7 +49,7 @@ export default class ChatPage extends React.Component<Props, State> {
   public render() {
     return (
       <Page navigation={this.props.navigation} customHeader={true}>
-        <Header title={"Chat"}></Header>
+        <Header title={'Chat'}></Header>
         <FlatList
           style={{ marginVertical: 4 }}
           refreshControl={
@@ -72,9 +72,9 @@ export default class ChatPage extends React.Component<Props, State> {
 
   public getExclude(isRefreshing: boolean = false) {
     if (isRefreshing) {
-      return ''
+      return '';
     }
-    return this.state.users.map(user => user.id).join(",");
+    return this.state.users.map(user => user.id).join(',');
   }
 
   public renderHeader() {
@@ -85,7 +85,7 @@ export default class ChatPage extends React.Component<Props, State> {
             <Row>
               <Wrap marginHorizontal={10}>
                 <Icon
-                  name="account-plus-outline"
+                  name='account-plus-outline'
                   size={25}
                   color={Colors.gray}
                 ></Icon>
@@ -96,7 +96,7 @@ export default class ChatPage extends React.Component<Props, State> {
           </View>
         </Col>
       </TouchableOpacity>
-    )
+    );
   }
 
   public renderUserItem(user: extendedUser) {
@@ -110,28 +110,28 @@ export default class ChatPage extends React.Component<Props, State> {
             <Text style={styles.name}>{user.name}</Text>
             <Text style={styles.chatCount}>{user.chatCount}</Text>
             <Icon
-              name="chevron-right"
+              name='chevron-right'
               size={30}
               color={Colors.lightGray}
             />
           </Row>
         </Wrap>
       </TouchableOpacity>
-    )
+    );
   }
 
   public async getChatedUserList(isRefreshing: boolean = false) {
     if ((!isRefreshing && this.state.noMore) || this.state.loadingMore) {
-      return
+      return;
     }
-    await this.setState({ loadingMore: true })
-    const offset = isRefreshing ? 0 : this.state.users.length
-    let users: extendedUser[] = await getRequest(`/api/user/getChatedUserList?sort=-createdAt&count=10&offset=${offset}&exclude=${this.getExclude(isRefreshing)}`)
-    const noMore = users.length > 0 ? false : true
+    await this.setState({ loadingMore: true });
+    const offset = isRefreshing ? 0 : this.state.users.length;
+    let users: extendedUser[] = await getRequest(`/api/user/getChatedUserList?sort=-createdAt&count=10&offset=${offset}&exclude=${this.getExclude(isRefreshing)}`);
+    const noMore = users.length > 0 ? false : true;
     if (!isRefreshing) {
-      users = [...this.state.users, ...users]
+      users = [...this.state.users, ...users];
     }
-    this.setState({ users, refreshing: false, noMore, loadingMore: false })
+    this.setState({ users, refreshing: false, noMore, loadingMore: false });
   }
 }
 
@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
     minHeight: 20,
     lineHeight: 20,
     fontSize: 12,
-    textAlign: "center",
-    overflow: "hidden"
+    textAlign: 'center',
+    overflow: 'hidden'
   }
 });

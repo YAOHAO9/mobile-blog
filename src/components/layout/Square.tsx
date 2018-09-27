@@ -7,7 +7,7 @@ interface Props {
 }
 
 interface State {
-  height: number,
+  height: number;
   padding?: number;
   borderRadius?: number;
 }
@@ -15,7 +15,7 @@ interface State {
 export default class Square extends React.Component<Props, State> {
   public constructor(props: Props) {
     super(props);
-    this.state = { height: 0, padding: 0, borderRadius: 0 }
+    this.state = { height: 0, padding: 0, borderRadius: 0 };
   }
 
   public render() {
@@ -26,10 +26,10 @@ export default class Square extends React.Component<Props, State> {
           height: this.state.height,
           padding: this.state.padding,
           borderRadius: this.state.borderRadius,
-          overflow: "hidden"
+          overflow: 'hidden'
         }}
         onLayout={(event) => {
-          let { paddingPercent, borderRadiusPercent } = this.props
+          let { paddingPercent, borderRadiusPercent } = this.props;
           if (!paddingPercent || paddingPercent < 0) {
             paddingPercent = 0;
           }
@@ -52,7 +52,7 @@ export default class Square extends React.Component<Props, State> {
             height,
             padding,
             borderRadius
-          })
+          });
         }}
       >
         {this.props.children}

@@ -1,6 +1,6 @@
 
 export interface ConfigInterface {
-  serverUrl: string
+  serverUrl: string;
 }
 
 let Config: ConfigInterface = {

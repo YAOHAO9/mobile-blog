@@ -13,31 +13,31 @@ interface Props {
 
 interface State {
   webViewHeight: number;
-  articleContent: Partial<ArticleContent>
+  articleContent: Partial<ArticleContent>;
 }
 
 export default class BlogDetail extends React.Component<Props, State> {
   static navigationOptions = ({ navigation }) => {
     return {
-      title: navigation.getParam("title", "Blog detail"),
+      title: navigation.getParam('title', 'Blog detail'),
     };
-  };
+  }
   private webView: WebView = null;
   public constructor(props: Props) {
     super(props);
     this.state = {
       webViewHeight: 0,
       articleContent: null
-    }
+    };
   }
 
   public componentWillMount() {
-    const articleId = this.props.navigation.getParam('articleId')
+    const articleId = this.props.navigation.getParam('articleId');
     this.getArticleDetail(articleId);
   }
 
   public render() {
-    const articleId = this.props.navigation.getParam('articleId')
+    const articleId = this.props.navigation.getParam('articleId');
     return (
       <Page navigation={this.props.navigation} customHeader={false}>
         <ScrollView style={{ flex: 1 }}>
@@ -48,7 +48,7 @@ export default class BlogDetail extends React.Component<Props, State> {
             ref={(webView) => this.webView = webView}
             onLoadEnd={() => this.webViewLoaded()}
             onMessage={(e) => {
-              this.handleMessage(e)
+              this.handleMessage(e);
             }}
             javaScriptEnabled={true}
           />
@@ -59,8 +59,8 @@ export default class BlogDetail extends React.Component<Props, State> {
 
   public async getArticleDetail(articleId) {
     const detailArticle: Article = await getRequest(`/api/article/${articleId}`);
-    this.props.navigation.setParams({ title: detailArticle.title })
-    this.setState({ articleContent: detailArticle.content })
+    this.props.navigation.setParams({ title: detailArticle.title });
+    this.setState({ articleContent: detailArticle.content });
   }
 
   public webViewLoaded() {

@@ -13,22 +13,22 @@ const Tab = createBottomTabNavigator(
       screen: Moment,
       navigationOptions() {
         return {
-          title: "Moment",
+          title: 'Moment',
           tabBarIcon({ tintColor }) {
             return <Icon
-              name="checkbox-multiple-blank-circle-outline"
+              name='checkbox-multiple-blank-circle-outline'
               size={25}
               color={tintColor}
             />;
           }
-        }
+        };
       }
     },
     Blog: {
       screen: Blog,
       navigationOptions() {
         return {
-          title: "Blog",
+          title: 'Blog',
           tabBarIcon({ tintColor }) {
             return <Icon
               name={'book-open-variant'}
@@ -36,14 +36,14 @@ const Tab = createBottomTabNavigator(
               color={tintColor}
             />;
           }
-        }
+        };
       }
     },
     Chat: {
       screen: Chat,
       navigationOptions() {
         return {
-          title: "Chat",
+          title: 'Chat',
           tabBarIcon({ tintColor }) {
             return <Icon
               name={'forum-outline'}
@@ -51,7 +51,7 @@ const Tab = createBottomTabNavigator(
               color={tintColor}
             />;
           }
-        }
+        };
       }
     },
   },
@@ -62,4 +62,4 @@ const Tab = createBottomTabNavigator(
   }
 );
 
-export default Tab
+export default Tab;
