@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { StatusBar, StatusBarProps, Platform, View } from 'react-native';
 import Wrap from './Wrap';
+import Colors from '../../variables/Colors';
 
 interface Props extends StatusBarProps {
   navigation: any;
@@ -42,10 +43,10 @@ export default class Page extends React.Component<Props> {
         <StatusBar
           // These are for android to make sure it has the same display with ios.
           translucent={true}
-          backgroundColor={'#0000'}
+          backgroundColor={Colors.transparent}
           barStyle={this.props.barStyle || 'dark-content'}
         />
-        <Wrap backgroundColor={this.props.backgroundColor || '#fff'} height={StatusBar.currentHeight || 24}></Wrap>
+        <Wrap backgroundColor={this.props.backgroundColor || Colors.slightWhite} height={StatusBar.currentHeight || 24}></Wrap>
       </View>
     )
   }

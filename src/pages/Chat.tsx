@@ -9,6 +9,7 @@ import Colors from '../variables/Colors';
 import User from '../models/User.model';
 import { getRequest } from '../services/RequestService';
 import Col from '../components/layout/Col';
+import Header from '../components/Header';
 
 
 interface Props {
@@ -47,6 +48,7 @@ export default class ChatPage extends React.Component<Props, State> {
   public render() {
     return (
       <Page navigation={this.props.navigation} customHeader={true}>
+        <Header title={"Chat"}></Header>
         <FlatList
           style={{ marginVertical: 4 }}
           refreshControl={

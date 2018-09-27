@@ -13,6 +13,7 @@ import Square from '../components/layout/Square';
 import { fromNow } from '../services/ToolService';
 import Blank from '../components/layout/Blank';
 import Page from '../components/layout/Page';
+import Header from '../components/Header';
 
 interface Props {
   navigation: any;
@@ -39,6 +40,7 @@ export default class MomentPage extends React.Component<Props, State> {
   public render() {
     return (
       <Page navigation={this.props.navigation} customHeader={true}>
+        <Header title={"Moment"}></Header>
         <FlatList
           style={{ marginVertical: 4 }}
           refreshControl={

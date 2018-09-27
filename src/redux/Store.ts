@@ -1,5 +1,5 @@
 import { combineReducers, createStore } from 'redux'
-import userReducer from './UserRedux';
+import userReducer from './ReduxUser';
 import { connect } from 'react-redux';
 
 const reducers = combineReducers({

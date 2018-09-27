@@ -6,6 +6,7 @@ import Article from '../models/Article.model';
 import { getRequest } from '../services/RequestService';
 import { fromNow } from '../services/ToolService';
 import Page from '../components/layout/Page';
+import Header from '../components/Header';
 
 interface Props {
   navigation: any;
@@ -37,6 +38,7 @@ export default class BlogPage extends React.Component<Props, State> {
   public render() {
     return (
       <Page navigation={this.props.navigation} customHeader={true}>
+        <Header title={"Blog"}></Header>
         <FlatList
           style={{ marginVertical: 4 }}
           refreshControl={
