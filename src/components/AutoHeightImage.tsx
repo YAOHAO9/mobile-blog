@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Image, Alert } from 'react-native';
+import { Image } from 'react-native';
 import Config from '../configs/config';
 import Archive from '../models/Archive.model';
 
