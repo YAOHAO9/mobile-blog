@@ -6,3 +6,7 @@ export const fromNow = (date) => {
   moment.locale('zh-cn');
   return moment(date).fromNow();
 };
+
+export const toCaption = (s) => {
+  return s[0].toUpperCase() + s.slice(1);
+};

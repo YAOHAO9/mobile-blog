@@ -35,7 +35,7 @@ const RootNavigator = createStackNavigator(
     }
   },
   {
-    initialRouteName: 'ChatDetail'
+    initialRouteName: 'Tab'
   });
 
 export default RootNavigator;

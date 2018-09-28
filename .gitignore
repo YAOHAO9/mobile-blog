@@ -57,3 +57,7 @@ buck-out/
 
 # Jest
 .jest/
+
+# test
+test.js
+test.te

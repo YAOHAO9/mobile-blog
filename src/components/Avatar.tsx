@@ -25,7 +25,7 @@ export default class Avatar extends React.Component<Props> {
     return (
       <Image
         style={styles.avatar}
-        source={{ uri: `${Config.serverUrl}/api/archive/${archive.id ? archive.id : archive}` }}
+        source={{ uri: `${Config.serverUrl}/api/archive/${archive.id}` }}
       />
     );
   }
