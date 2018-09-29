@@ -1,9 +1,11 @@
 import { combineReducers, createStore } from 'redux';
 import userReducer from './ReduxUser';
 import { connect } from 'react-redux';
+import chatReducer from './ReduxChat';
 
 const reducers = combineReducers({
-  user: userReducer
+  user: userReducer,
+  chat: chatReducer
 });
 
 const store = createStore(reducers);

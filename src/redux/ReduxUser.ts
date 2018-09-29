@@ -13,6 +13,7 @@ const userReducer = (state: User = new User(), action) => {
   switch (action.type) {
     case UpdateUser:
       state = action.user;
+      return state;
     default:
       return state;
   }

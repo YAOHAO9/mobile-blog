@@ -5,6 +5,7 @@ const Colors = {
   gray: '#666',
   black: '#000',
   white: '#fff',
-  headerBgColor: '#FFF'
+  headerBgColor: '#FFF',
+  warning: '#eb513d'
 };
 export default Colors;
