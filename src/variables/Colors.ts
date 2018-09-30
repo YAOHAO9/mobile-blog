@@ -7,6 +7,8 @@ const Colors = {
   black: '#000',
   white: '#fff',
   headerBgColor: '#FFF',
-  warning: '#eb513d'
+  warning: '#eb3323',
+  blue: '#61cde7',
+  lightBlue: '#bbe9ff'
 };
 export default Colors;

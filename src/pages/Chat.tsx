@@ -3,7 +3,7 @@ import Page from '../components/layout/Page';
 import Wrap from '../components/layout/Wrap';
 import Row from '../components/layout/Row';
 import Avatar from '../components/Avatar';
-import { Text, FlatList, RefreshControl, TouchableOpacity, View, StyleSheet, Alert } from 'react-native';
+import { Text, FlatList, RefreshControl, TouchableOpacity, View, StyleSheet } from 'react-native';
 import Icon from '../components/Icon';
 import Colors from '../variables/Colors';
 import { getRequest } from '../services/RequestService';
@@ -43,10 +43,16 @@ export default class ChatPage extends React.Component<Props, State> {
     };
   }
 
+  public async updateAllUnreadMsgCount() {
+    const allUnreadMsgCount = await getRequest('/api/chat/allUnreadMsgCount');
+    this.props.updateAllUnreadMsgCount(allUnreadMsgCount);
+  }
+
   public componentWillMount() {
     this.willFocusListener = this.props.navigation.addListener('willFocus',
       () => {
         this.getChatedUserList(true);
+        this.updateAllUnreadMsgCount();
       }
     );
   }

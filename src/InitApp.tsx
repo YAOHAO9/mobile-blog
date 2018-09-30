@@ -9,6 +9,7 @@ import { ReduxConnect, combineMapStateToProps, combineMapDispatchToProps } from 
 import { mapChatStateToProps, mapChatDispatchToProps, ReduxChatProps } from './redux/ReduxChatHelper';
 import ChatedUser from './models/ChatedUser.model';
 import io from 'socket.io-client';
+import SocketService from './services/SocketService';
 
 @ReduxConnect(
   combineMapStateToProps([mapUserStateToProps, mapChatStateToProps]),
@@ -23,7 +24,7 @@ export default class InitApp extends React.Component<ReduxUserProps & ReduxChatP
     // get allUnreadMsgCount
     const allUnreadMsgCount = await getRequest('/api/chat/allUnreadMsgCount');
     this.props.updateAllUnreadMsgCount(allUnreadMsgCount);
-    const socket = io(Config.serverUrl, { path: '/socket.io' });
+    const socket = SocketService.instance;
     socket.on('connect', () => {
       socket.emit('whoami', { userId: loginUser.id, accessOrigin: Config.serverUrl });
     });
