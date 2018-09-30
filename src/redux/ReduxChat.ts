@@ -1,9 +1,11 @@
 import Chat from '../models/Chat.model';
 import ChatedUser from '../models/ChatedUser.model';
 
-const UpdateAllUnreadMsgCount = 'UpdateAllUnreadMsgCount';
-const UpdateChatedUsers = 'UpdateChatedUsers';
-
+enum ActionType {
+  UpdateAllUnreadMsgCount = 'UpdateAllUnreadMsgCount',
+  UpdateChatedUsers = 'UpdateChatedUsers',
+  UpdateChatList = 'UpdateChatList',
+}
 export interface ChatState {
   allUnreadMsgCount: number;
   chatedUsers: ChatedUser[];
@@ -11,14 +13,24 @@ export interface ChatState {
 }
 
 // Action
+export const decreaseAllUnreadMsgCount = (allUnreadMsgCount: number) => ({
+  type: ActionType.UpdateAllUnreadMsgCount,
+  allUnreadMsgCount
+});
+
 export const updateAllUnreadMsgCount = (allUnreadMsgCount: number) => ({
-  type: UpdateAllUnreadMsgCount,
+  type: ActionType.UpdateAllUnreadMsgCount,
   allUnreadMsgCount
 });
 
 export const updateChatedUsers = (chatedUsers: ChatedUser[]) => ({
-  type: UpdateChatedUsers,
+  type: ActionType.UpdateChatedUsers,
   chatedUsers
+});
+
+export const updateChatList = (chatList: Chat[]) => ({
+  type: ActionType.UpdateChatList,
+  chatList
 });
 
 const initChatState = {
@@ -30,11 +42,14 @@ const initChatState = {
 // Reducer
 const chatReducer = (state: ChatState = initChatState, action) => {
   switch (action.type) {
-    case UpdateAllUnreadMsgCount:
+    case ActionType.UpdateAllUnreadMsgCount:
       state = Object.assign({}, state, { allUnreadMsgCount: action.allUnreadMsgCount });
       return state;
-    case UpdateChatedUsers:
+    case ActionType.UpdateChatedUsers:
       state = Object.assign({}, state, { chatedUsers: action.chatedUsers });
+      return state;
+    case ActionType.UpdateChatList:
+      state = Object.assign({}, state, { chatList: action.chatList });
       return state;
     default:
       return state;

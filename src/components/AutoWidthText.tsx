@@ -4,16 +4,19 @@ import { View, Text, StyleProp, TextStyle, StyleSheet } from 'react-native';
 interface Props {
   text: string;
   style: StyleProp<TextStyle>;
+  center?: boolean;
 }
 interface State {
   contentHeight: number;
+  left: number;
 }
 
 export default class AutoWidthText extends React.Component<Props, State> {
   public constructor(props: Props) {
     super(props);
     this.state = {
-      contentHeight: 30
+      contentHeight: 30,
+      left: undefined
     };
   }
 
@@ -27,9 +30,10 @@ export default class AutoWidthText extends React.Component<Props, State> {
     return (
       <View style={{ height: this.state.contentHeight }}>
         <Text
-          style={[styleSheets.text, ...styles]}
+          style={[styleSheets.text, ...styles, { left: this.state.left }]}
           onLayout={(event) => {
-            this.setState({ contentHeight: event.nativeEvent.layout.height });
+            const { width, height } = event.nativeEvent.layout;
+            this.setState({ contentHeight: height, left: this.props.center ? -width / 2 : undefined });
           }}
         >
           {this.props.text}

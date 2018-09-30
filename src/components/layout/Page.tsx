@@ -11,7 +11,6 @@ interface Props extends StatusBarProps {
 
 export default class Page extends React.Component<Props> {
   public willFocusListener;
-  public willBlurListener;
 
   public constructor(props: Props) {
     super(props);
@@ -30,12 +29,10 @@ export default class Page extends React.Component<Props> {
         }
       }
     );
-
   }
 
   public componentWillUnmount() {
     this.willFocusListener && this.willFocusListener.remove();
-    this.willBlurListener && this.willBlurListener.remove();
   }
 
   public renderCustomBar() {

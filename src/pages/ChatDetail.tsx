@@ -1,25 +1,30 @@
 import * as React from 'react';
-import { getRequest } from '../services/RequestService';
+import { getRequest, putRequest } from '../services/RequestService';
 import Page from '../components/layout/Page';
 import User from '../models/User.model';
 import { NavigationScreenProp } from 'react-navigation';
 import ChatItem from '../components/ChatItem';
 import { FlatList, RefreshControl } from 'react-native';
 import Chat from '../models/Chat.model';
-import ReduxUserConnect, { ReduxUserProps } from '../redux/ReduxUserHelper';
-interface Props extends ReduxUserProps {
+import { ReduxUserProps, mapUserStateToProps, mapUserDispatchToProps } from '../redux/ReduxUserHelper';
+import { ReduxChatProps, mapChatStateToProps, mapChatDispatchToProps } from '../redux/ReduxChatHelper';
+import { ReduxConnect, combineMapStateToProps, combineMapDispatchToProps } from '../redux/Store';
+interface Props extends ReduxUserProps, ReduxChatProps {
   navigation: NavigationScreenProp<null>;
 }
 
 interface State {
   receiver: User;
   session: string;
-  chats: Chat[];
   refreshing: boolean;
   loading: boolean;
 }
 
-@ReduxUserConnect
+
+@ReduxConnect(
+  combineMapStateToProps([mapUserStateToProps, mapChatStateToProps]),
+  combineMapDispatchToProps([mapUserDispatchToProps, mapChatDispatchToProps])
+)
 export default class ChatDetail extends React.Component<Props, State> {
   static navigationOptions = ({ navigation }) => {
     return {
@@ -33,7 +38,6 @@ export default class ChatDetail extends React.Component<Props, State> {
     this.state = {
       receiver: new User(),
       session: selfId < receiverId ? (`${selfId}-${receiverId}`) : (`${receiverId}-${selfId}`),
-      chats: [],
       refreshing: false,
       loading: false
     };
@@ -41,7 +45,7 @@ export default class ChatDetail extends React.Component<Props, State> {
 
   public componentWillMount() {
     this.getReceiver();
-    this.getChats();
+    this.getChats(true);
   }
 
   public async getReceiver() {
@@ -51,18 +55,29 @@ export default class ChatDetail extends React.Component<Props, State> {
     this.setState({ receiver });
   }
 
-  public async getChats() {
+  public async getChats(init: boolean = false) {
     if (this.state.loading) {
       return;
     }
     await this.setState({ loading: true });
-    const offset = this.state.chats.length;
+    const offset = init ? 0 : this.props.chat.chatList.length;
     let chats: Chat[] = await getRequest(`/api/chat/find?sort=-createdAt&count=10&offset=${offset}&session=${this.state.session}`);
-    chats = [...chats, ...this.state.chats];
-    this.setState({ chats, refreshing: false, loading: false });
+    if (!init) {
+      chats = [...chats, ...this.props.chat.chatList];
+    }
+    this.props.updateChatList(chats);
+    this.setState({ refreshing: false, loading: false });
+  }
+
+  public read(chat: Chat) {
+    setImmediate(() => {
+      putRequest(`/api/chat/read`, { chatId: chat.id });
+      this.props.updateAllUnreadMsgCount(this.props.chat.allUnreadMsgCount - 1);
+    });
   }
 
   public render() {
+    const chatList = this.props.chat.chatList;
     return (
       <Page navigation={this.props.navigation} customHeader={false}>
         <FlatList
@@ -73,9 +88,16 @@ export default class ChatDetail extends React.Component<Props, State> {
               onRefresh={() => this.getChats()}
             ></RefreshControl>
           }
-          data={this.state.chats}
+          data={chatList}
           keyExtractor={(item) => item.id + ''}
-          renderItem={(data) => <ChatItem chat={data.item}></ChatItem>}
+          renderItem={(data) => {
+            const chat = data.item;
+            if (!chat.read) {
+              this.read(chat);
+              chat.read = true;
+            }
+            return <ChatItem chat={chat} lastChat={data.index === 0 ? null : chatList[data.index - 1]}></ChatItem>;
+          }}
         >
         </FlatList>
       </Page>

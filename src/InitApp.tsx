@@ -43,11 +43,14 @@ export default class InitApp extends React.Component<ReduxUserProps & ReduxChatP
         if (loginUser.id !== chat.receiverId) {
           newChatedUser = chat.receiver;
         }
+        if (!newChatedUser)
+          return;
         newChatedUser.unreadCount = 1;
         chatedUsers.unshift(newChatedUser as ChatedUser);
       }
       this.props.updateAllUnreadMsgCount(this.props.chat.allUnreadMsgCount + 1);
       this.props.updateChatedUsers(chatedUsers);
+      this.props.updateChatList([...this.props.chat.chatList, chat]);
     });
 
   }

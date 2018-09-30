@@ -13,8 +13,6 @@ import { NavigationScreenProp } from 'react-navigation';
 import { ReduxConnect, combineMapStateToProps, combineMapDispatchToProps } from '../redux/Store';
 import { mapUserStateToProps, mapUserDispatchToProps, ReduxUserProps } from '../redux/ReduxUserHelper';
 import { mapChatStateToProps, mapChatDispatchToProps, ReduxChatProps } from '../redux/ReduxChatHelper';
-import SocketService from '../services/SocketService';
-import Chat from '../models/Chat.model';
 import ChatedUser from '../models/ChatedUser.model';
 
 
@@ -34,6 +32,7 @@ interface State {
   combineMapDispatchToProps([mapUserDispatchToProps, mapChatDispatchToProps])
 )
 export default class ChatPage extends React.Component<Props, State> {
+  public willFocusListener;
 
   public constructor(props: Props) {
     super(props);
@@ -45,14 +44,15 @@ export default class ChatPage extends React.Component<Props, State> {
   }
 
   public componentWillMount() {
-    this.getChatedUserList();
+    this.willFocusListener = this.props.navigation.addListener('willFocus',
+      () => {
+        this.getChatedUserList(true);
+      }
+    );
   }
 
-  public componentDidMount() {
-    const socket = SocketService.instance;
-    socket.on('update', (chat: Chat) => {
-      Alert.alert(JSON.stringify(chat));
-    });
+  public componentWillUnmount() {
+    this.willFocusListener && this.willFocusListener.remove();
   }
 
   public render() {
@@ -134,17 +134,16 @@ export default class ChatPage extends React.Component<Props, State> {
       return;
     }
     await this.setState({ loadingMore: true });
-    const offset = isRefreshing ? 0 : this.props.chat.chatedUsers.length;
-    let chatedUsers: ChatedUser[] = await getRequest(`/api/user/getChatedUserList?sort=-createdAt&count=10&offset=${offset}&exclude=${this.getExclude(isRefreshing)}`);
+    let chatedUsers: ChatedUser[] = await getRequest(`/api/user/getChatedUserList?sort=-createdAt&count=10&offset=${0}&exclude=${this.getExclude(isRefreshing)}`);
     const noMore = chatedUsers.length > 0 ? false : true;
     await Promise.all(chatedUsers.map(async (chatedUser) => {
       const unreadCount = await getRequest(`/api/chat/unreadMsgCount/${chatedUser.id}`);
       chatedUser.unreadCount = unreadCount;
     }));
-    if (!isRefreshing && !noMore) {
+    if (!isRefreshing) {
       chatedUsers = [...this.props.chat.chatedUsers, ...chatedUsers];
-      this.props.updateChatedUsers(chatedUsers);
     }
+    this.props.updateChatedUsers(chatedUsers);
     this.setState({ refreshing: false, noMore, loadingMore: false });
   }
 }

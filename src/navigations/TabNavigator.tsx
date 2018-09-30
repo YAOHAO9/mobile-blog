@@ -6,6 +6,7 @@ import Moment from '../pages/Moment';
 import Blog from '../pages/Blog';
 import Chat from '../pages/Chat';
 import Icon from '../components/Icon';
+import ChatTabIcon from '../components/ChatTabIcon';
 
 const Tab = createBottomTabNavigator(
   {
@@ -45,7 +46,7 @@ const Tab = createBottomTabNavigator(
         return {
           title: 'Chat',
           tabBarIcon({ tintColor }) {
-            return <Icon
+            return <ChatTabIcon
               name={'forum-outline'}
               size={25}
               color={tintColor}

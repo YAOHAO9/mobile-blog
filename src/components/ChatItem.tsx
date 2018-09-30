@@ -6,12 +6,14 @@ import Wrap from './layout/Wrap';
 import Avatar from './Avatar';
 import Chat from '../models/Chat.model';
 import ReduxUserConnect, { ReduxUserProps } from '../redux/ReduxUserHelper';
-import { toCaption } from '../services/ToolService';
+import { toCaption, fromatChatDate } from '../services/ToolService';
 import AutoHeightImage from './AutoHeightImage';
 import AutoWidthText from './AutoWidthText';
+import Colors from '../variables/Colors';
 
 interface Props extends ReduxUserProps {
   chat: Chat;
+  lastChat: Chat;
 }
 
 @ReduxUserConnect
@@ -46,6 +48,23 @@ export default class ChatItem extends React.Component<Props> {
     );
   }
 
+  public renderDate(chat: Chat, lastChat: Chat) {
+    const chatCreatedAt = new Date(chat.createdAt).getTime();
+    if (lastChat && chatCreatedAt - new Date(lastChat.createdAt).getTime() <= 1000 * 60) {
+      return undefined;
+    }
+
+    return (
+      <View>
+        <AutoWidthText
+          style={styles.date}
+          text={fromatChatDate(chatCreatedAt)}
+          center={true}
+        >
+        </AutoWidthText>
+      </View>);
+  }
+
   public renderImageContent(chat: Chat) {
     if (chat.type !== 'image')
       return undefined;
@@ -59,23 +78,27 @@ export default class ChatItem extends React.Component<Props> {
   public render() {
     const chat = this.props.chat;
     return (
-      <Row flex={undefined} alignItems={undefined} marginHorizontal={10} marginTop={10}>
-        {!this.isSelf() && <Avatar archive={{ id: chat.sender.avator }}></Avatar>}
-        <Col>
-          <Text style={this.getStyle('name')}>{chat.sender.name}</Text>
-          <Wrap marginTop={5} marginHorizontal={10}>
-            {this.renderTextContent(chat)}
-            {this.renderImageContent(chat)}
-          </Wrap>
-        </Col>
-        {this.isSelf() && <Avatar archive={{ id: chat.sender.avator }}></Avatar>}
-      </Row>
+      <Col alignItems={'center'}>
+        {this.renderDate(chat, this.props.lastChat)}
+        <Row flex={undefined} alignItems={undefined} marginHorizontal={10} marginVertical={5}>
+          {!this.isSelf() && <Avatar archive={{ id: chat.sender.avator }}></Avatar>}
+          <Col>
+            <Text style={this.getStyle('name')}>{chat.sender.name}</Text>
+            <Wrap marginTop={5} marginHorizontal={10}>
+              {this.renderTextContent(chat)}
+              {this.renderImageContent(chat)}
+            </Wrap>
+          </Col>
+          {this.isSelf() && <Avatar archive={{ id: chat.sender.avator }}></Avatar>}
+        </Row>
+      </Col>
     );
   }
 }
 
 
 const styles = StyleSheet.create({
+  date: { height: 20, backgroundColor: Colors.slightGray, paddingHorizontal: 10, lineHeight: 20, fontSize: 12 },
   name: { marginHorizontal: 10 },
   text: {
     fontSize: 12,
