@@ -12,4 +12,7 @@ export const putRequest = async <T = any>(url: string, data?: any, config?: Axio
   return response.data.data;
 };
 
-
+export const postRequest = async <T = any>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T> => {
+  const response = await Axios.post(Config.serverUrl + url, data, config);
+  return response.data.data;
+};

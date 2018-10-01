@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { getRequest, putRequest } from '../services/RequestService';
+import { getRequest, putRequest, postRequest } from '../services/RequestService';
 import Page from '../components/layout/Page';
 import User from '../models/User.model';
 import { NavigationScreenProp } from 'react-navigation';
@@ -13,6 +13,8 @@ import Row from '../components/layout/Row';
 import Colors from '../variables/Colors';
 import SocketService from '../services/SocketService';
 import * as ImagePicker from 'react-native-image-picker';
+import Icon from '../components/Icon';
+import Wrap from '../components/layout/Wrap';
 
 
 interface Props extends ReduxUserProps, ReduxChatProps {
@@ -124,29 +126,29 @@ export default class ChatDetail extends React.Component<Props, State> {
 
   public async sendImage() {
     const options = {
-      title: 'Select Avatar',
-      customButtons: [
-        { name: 'fb', title: 'Choose Photo from Facebook' },
-      ],
+      title: '选择您想发送的图片',
       storageOptions: {
         skipBackup: true,
         path: 'images'
       }
     };
 
-    ImagePicker.launchImageLibrary(options, (response) => {
+    ImagePicker.launchImageLibrary(options, async (response) => {
       if (response.didCancel) {
-        console.log('User cancelled image picker');
+        return;
       }
-      else if (response.error) {
-        console.log('ImagePicker Error: ', response.error);
+      if (response.error) {
+        return;
       }
-      else if (response.customButton) {
-        console.log('User tapped custom button: ', response.customButton);
+      if (response.customButton) {
+        return;
       }
-      else {
-        Alert.alert(response.fileSize + '');
-      }
+      const formData = new FormData();
+      formData.append('session', this.state.session);
+      formData.append('senderId', this.state.selfId);
+      formData.append('receiverId', this.state.receiverId);
+      formData.append('image', { uri: response.uri, type: 'multipart/form-data', name: 'image.png' });
+      await postRequest('/api/chat/sendImage', formData);
     });
   }
   public render() {
@@ -177,6 +179,25 @@ export default class ChatDetail extends React.Component<Props, State> {
         >
         </FlatList>
         <Row flex={undefined} margin={5}>
+          <TouchableOpacity
+            style={{
+              height: 30,
+              paddingHorizontal: 15,
+              borderRadius: 6,
+              overflow: 'hidden',
+              marginHorizontal: 5,
+              backgroundColor: Colors.white,
+            }}
+            onPress={() => this.sendImage()}>
+            <Wrap paddingVertical={3}>
+              <Icon
+                name={'file-image'}
+                size={24}
+                color={Colors.lightGray}
+              >
+              </Icon>
+            </Wrap>
+          </TouchableOpacity>
           <TextInput
             style={{
               flex: 1,
@@ -196,15 +217,18 @@ export default class ChatDetail extends React.Component<Props, State> {
             onChangeText={(text) => this.setState({ sendMsg: text })}
           />
           <TouchableOpacity
-            onPress={() => this.sendImage()}>
-            <Text style={{
+            style={{
               height: 30,
               paddingHorizontal: 15,
               borderRadius: 6,
               overflow: 'hidden',
               marginHorizontal: 5,
-              lineHeight: 30,
-              backgroundColor: Colors.lightBlue,
+              backgroundColor: Colors.white,
+            }}
+            onPress={() => this.sumbit()}>
+            <Text style={{
+              color: Colors.gray,
+              lineHeight: 30
             }}>发送</Text>
           </TouchableOpacity>
         </Row>
