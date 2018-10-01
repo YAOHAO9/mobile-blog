@@ -8,6 +8,8 @@ target 'MobileBlog' do
   # Pods for MobileBlog
   pod "IQKeyboardManager" 
 
+  pod 'react-native-image-picker', :path => '../node_modules/react-native-image-picker'
+
   target 'MobileBlogTests' do
     inherit! :search_paths
     # Pods for testing

@@ -12,6 +12,9 @@ import { ReduxConnect, combineMapStateToProps, combineMapDispatchToProps } from 
 import Row from '../components/layout/Row';
 import Colors from '../variables/Colors';
 import SocketService from '../services/SocketService';
+import * as ImagePicker from 'react-native-image-picker';
+
+
 interface Props extends ReduxUserProps, ReduxChatProps {
   navigation: NavigationScreenProp<null>;
 }
@@ -119,6 +122,33 @@ export default class ChatDetail extends React.Component<Props, State> {
     this.setState({ sendMsg: '' });
   }
 
+  public async sendImage() {
+    const options = {
+      title: 'Select Avatar',
+      customButtons: [
+        { name: 'fb', title: 'Choose Photo from Facebook' },
+      ],
+      storageOptions: {
+        skipBackup: true,
+        path: 'images'
+      }
+    };
+
+    ImagePicker.launchImageLibrary(options, (response) => {
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      }
+      else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      }
+      else if (response.customButton) {
+        console.log('User tapped custom button: ', response.customButton);
+      }
+      else {
+        Alert.alert(response.fileSize + '');
+      }
+    });
+  }
   public render() {
     const chatList = this.state.chatList;
     return (
@@ -166,7 +196,7 @@ export default class ChatDetail extends React.Component<Props, State> {
             onChangeText={(text) => this.setState({ sendMsg: text })}
           />
           <TouchableOpacity
-            onPress={() => this.sumbit()}>
+            onPress={() => this.sendImage()}>
             <Text style={{
               height: 30,
               paddingHorizontal: 15,
