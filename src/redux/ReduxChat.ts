@@ -1,42 +1,22 @@
-import Chat from '../models/Chat.model';
-import ChatedUser from '../models/ChatedUser.model';
 
 enum ActionType {
   UpdateAllUnreadMsgCount = 'UpdateAllUnreadMsgCount',
   UpdateChatedUsers = 'UpdateChatedUsers',
   UpdateChatList = 'UpdateChatList',
 }
+
 export interface ChatState {
   allUnreadMsgCount: number;
-  chatedUsers: ChatedUser[];
-  chatList: Chat[];
 }
 
 // Action
-export const decreaseAllUnreadMsgCount = (allUnreadMsgCount: number) => ({
-  type: ActionType.UpdateAllUnreadMsgCount,
-  allUnreadMsgCount
-});
-
 export const updateAllUnreadMsgCount = (allUnreadMsgCount: number) => ({
   type: ActionType.UpdateAllUnreadMsgCount,
   allUnreadMsgCount
 });
 
-export const updateChatedUsers = (chatedUsers: ChatedUser[]) => ({
-  type: ActionType.UpdateChatedUsers,
-  chatedUsers
-});
-
-export const updateChatList = (chatList: Chat[]) => ({
-  type: ActionType.UpdateChatList,
-  chatList
-});
-
 const initChatState = {
   allUnreadMsgCount: 0,
-  chatedUsers: [],
-  chatList: [],
 };
 
 // Reducer

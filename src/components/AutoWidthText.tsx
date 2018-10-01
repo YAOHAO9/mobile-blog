@@ -55,6 +55,7 @@ export default class AutoWidthText extends React.Component<Props, State> {
 
 const styleSheets = StyleSheet.create({
   text: {
+    minHeight: 30,
     position: 'absolute',
     overflow: 'hidden',
     top: 0,

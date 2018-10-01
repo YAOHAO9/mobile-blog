@@ -4,7 +4,7 @@ import Page from '../components/layout/Page';
 import User from '../models/User.model';
 import { NavigationScreenProp } from 'react-navigation';
 import ChatItem from '../components/ChatItem';
-import { FlatList, RefreshControl, TextInput, KeyboardAvoidingView, Keyboard, TouchableOpacity, Text } from 'react-native';
+import { FlatList, RefreshControl, TextInput, TouchableOpacity, Text, Alert } from 'react-native';
 import Chat from '../models/Chat.model';
 import { ReduxUserProps, mapUserStateToProps, mapUserDispatchToProps } from '../redux/ReduxUserHelper';
 import { ReduxChatProps, mapChatStateToProps, mapChatDispatchToProps } from '../redux/ReduxChatHelper';
@@ -24,6 +24,7 @@ interface State {
   refreshing: boolean;
   loading: boolean;
   sendMsg: string;
+  chatList: Chat[];
 }
 
 
@@ -32,6 +33,7 @@ interface State {
   combineMapDispatchToProps([mapUserDispatchToProps, mapChatDispatchToProps])
 )
 export default class ChatDetail extends React.Component<Props, State> {
+  public flatList: FlatList<Chat>;
   static navigationOptions = ({ navigation }) => {
     return {
       title: navigation.getParam('title', 'Chat detail'),
@@ -48,14 +50,38 @@ export default class ChatDetail extends React.Component<Props, State> {
       session: selfId < receiverId ? (`${selfId}-${receiverId}`) : (`${receiverId}-${selfId}`),
       refreshing: false,
       loading: false,
-      sendMsg: 'HAHAHH',
+      sendMsg: '',
+      chatList: []
     };
   }
 
+  public componentDidMount() {
+    setTimeout(() => {
+      if (this.flatList) {
+        this.flatList.scrollToEnd();
+      }
+    }, 1000);
+  }
+
   public componentWillMount() {
-    this.props.updateChatList([]);
     this.getReceiver();
     this.getChats(true);
+    SocketService.instance.registerUpdateListener((chat: Chat) => {
+      let { receiverId } = this.state;
+      if (receiverId !== chat.senderId && receiverId !== chat.receiverId) {
+        return;
+      }
+      this.setState({ chatList: [...this.state.chatList, chat] });
+      setTimeout(() => {
+        if (this.flatList) {
+          this.flatList.scrollToEnd();
+        }
+      }, 200);
+    });
+  }
+
+  public componentWillUnmount() {
+    SocketService.instance.registerUpdateListener(null);
   }
 
   public async getReceiver() {
@@ -70,21 +96,37 @@ export default class ChatDetail extends React.Component<Props, State> {
       return;
     }
     await this.setState({ loading: true });
-    const offset = init ? 0 : this.props.chat.chatList.length;
+    const offset = init ? 0 : this.state.chatList.length;
     let chats: Chat[] = await getRequest(`/api/chat/find?sort=-createdAt&count=10&offset=${offset}&session=${this.state.session}`);
     if (!init) {
-      chats = [...chats, ...this.props.chat.chatList];
+      chats = [...chats, ...this.state.chatList];
     }
-    this.props.updateChatList(chats);
+    this.setState({ chatList: chats });
     this.setState({ refreshing: false, loading: false });
   }
 
+  public sumbit() {
+    if (this.state.sendMsg.trim() === '') {
+      Alert.alert('请说些什么吧');
+      return;
+    }
+    SocketService.instance.socket.emit('submit', {
+      content: this.state.sendMsg,
+      session: this.state.session,
+      senderId: this.state.selfId,
+      receiverId: this.state.receiverId
+    });
+    this.setState({ sendMsg: '' });
+  }
 
   public render() {
-    const chatList = this.props.chat.chatList;
+    const chatList = this.state.chatList;
     return (
       <Page navigation={this.props.navigation} customHeader={false}>
         <FlatList
+          ref={(flatList) => {
+            this.flatList = flatList;
+          }}
           style={{ marginVertical: 4 }}
           refreshControl={
             <RefreshControl
@@ -116,23 +158,15 @@ export default class ChatDetail extends React.Component<Props, State> {
               overflow: 'hidden',
             }}
             underlineColorAndroid='transparent'
-            multiline={true}
             keyboardType={'default'}
+            onSubmitEditing={() => this.sumbit()}
             enablesReturnKeyAutomatically={true}
             value={this.state.sendMsg}
             placeholder='Type here to translate!'
             onChangeText={(text) => this.setState({ sendMsg: text })}
           />
           <TouchableOpacity
-            onPress={() => {
-              SocketService.instance.emit('submit', {
-                content: this.state.sendMsg,
-                session: this.state.session,
-                senderId: this.state.selfId,
-                receiverId: this.state.receiverId
-              });
-              this.setState({ sendMsg: '' });
-            }}>
+            onPress={() => this.sumbit()}>
             <Text style={{
               height: 30,
               paddingHorizontal: 15,

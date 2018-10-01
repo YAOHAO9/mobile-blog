@@ -14,6 +14,8 @@ import { ReduxConnect, combineMapStateToProps, combineMapDispatchToProps } from 
 import { mapUserStateToProps, mapUserDispatchToProps, ReduxUserProps } from '../redux/ReduxUserHelper';
 import { mapChatStateToProps, mapChatDispatchToProps, ReduxChatProps } from '../redux/ReduxChatHelper';
 import ChatedUser from '../models/ChatedUser.model';
+import SocketService from '../services/SocketService';
+import Chat from '../models/Chat.model';
 
 
 interface Props extends ReduxUserProps, ReduxChatProps {
@@ -24,6 +26,7 @@ interface State {
   refreshing: boolean;
   noMore: boolean;
   loadingMore: boolean;
+  chatedUsers: ChatedUser[];
 }
 
 
@@ -40,6 +43,7 @@ export default class ChatPage extends React.Component<Props, State> {
       refreshing: false,
       noMore: false,
       loadingMore: false,
+      chatedUsers: []
     };
   }
 
@@ -49,16 +53,39 @@ export default class ChatPage extends React.Component<Props, State> {
   }
 
   public componentWillMount() {
-    this.willFocusListener = this.props.navigation.addListener('willFocus',
+    this.willFocusListener = this.props.navigation.addListener('didFocus',
       () => {
         this.getChatedUserList(true);
         this.updateAllUnreadMsgCount();
+        SocketService.instance.registerUpdateListener((chat: Chat) => {
+          const chatedUsers = this.state.chatedUsers;
+          const chatedUser = chatedUsers.find(chatedUser => {
+            return chatedUser.id === chat.senderId || chatedUser.id === chat.receiverId;
+          });
+
+          if (chatedUser) {
+            chatedUser.unreadCount++;
+          } else {
+            let newChatedUser: Partial<ChatedUser>;
+            if (this.props.user.id !== chat.senderId) {
+              newChatedUser = chat.sender;
+            }
+            if (this.props.user.id !== chat.receiverId) {
+              newChatedUser = chat.receiver;
+            }
+            newChatedUser.unreadCount = 1;
+            chatedUsers.unshift(newChatedUser as ChatedUser);
+          }
+          this.props.updateAllUnreadMsgCount(this.props.chat.allUnreadMsgCount + 1);
+          this.setState({ chatedUsers });
+        });
       }
     );
   }
 
   public componentWillUnmount() {
     this.willFocusListener && this.willFocusListener.remove();
+    SocketService.instance.registerUpdateListener(null);
   }
 
   public render() {
@@ -74,7 +101,7 @@ export default class ChatPage extends React.Component<Props, State> {
             ></RefreshControl>
           }
           ListHeaderComponent={() => this.renderHeader()}
-          data={this.props.chat.chatedUsers}
+          data={this.state.chatedUsers}
           keyExtractor={(item) => item.id + ''}
           renderItem={(data) => this.renderUserItem(data.item)}
           onEndReached={() => this.getChatedUserList()}
@@ -89,7 +116,7 @@ export default class ChatPage extends React.Component<Props, State> {
     if (isRefreshing) {
       return '';
     }
-    return this.props.chat.chatedUsers.map(user => user.id).join(',');
+    return this.state.chatedUsers.map(user => user.id).join(',');
   }
 
   public renderHeader() {
@@ -147,9 +174,9 @@ export default class ChatPage extends React.Component<Props, State> {
       chatedUser.unreadCount = unreadCount;
     }));
     if (!isRefreshing) {
-      chatedUsers = [...this.props.chat.chatedUsers, ...chatedUsers];
+      chatedUsers = [...this.state.chatedUsers, ...chatedUsers];
     }
-    this.props.updateChatedUsers(chatedUsers);
+    this.setState({ chatedUsers });
     this.setState({ refreshing: false, noMore, loadingMore: false });
   }
 }
