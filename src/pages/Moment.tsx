@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { getRequest } from '../services/RequestService';
 import Moment from '../models/Moment.model';
-import { Image, View, Text, StyleSheet, FlatList, RefreshControl } from 'react-native';
+import { View, Text, StyleSheet, FlatList, RefreshControl } from 'react-native';
+import { CachedImage } from 'react-native-img-cache';
 import Config from '../configs/config';
 import Avatar from '../components/Avatar';
 import Row from '../components/layout/Row';
@@ -150,7 +151,7 @@ export default class MomentPage extends React.Component<Props, State> {
               return (
                 <Square key={column} paddingPercent={2}>
                   <Square borderRadiusPercent={5}>
-                    <Image
+                    <CachedImage
                       style={{ flex: 1 }}
                       source={{ uri: Config.serverUrl + '/api/archive/' + column }}
                     />

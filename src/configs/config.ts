@@ -1,11 +1,11 @@
+import { development } from './development';
+import { production } from './production';
 
 export interface ConfigInterface {
   serverUrl: string;
 }
 
-let Config: ConfigInterface = {
-  serverUrl: 'http://192.168.3.3:3000'
-};
+const envConfig = !__DEV__ ? development : production;
 
-Config = Object.assign(Config, {});
+const Config: ConfigInterface = envConfig;
 export default Config;
