@@ -8,10 +8,10 @@ import { fromNow } from '../services/ToolService';
 import Page from '../components/layout/Page';
 import Header from '../components/Header';
 import { NavigationScreenProp } from 'react-navigation';
+import { updateLoadingState } from '../redux/ReduxGlobalSettingHelper';
 
 interface Props {
   navigation: NavigationScreenProp<null>;
-
 }
 
 interface State {
@@ -61,17 +61,22 @@ export default class BlogPage extends React.Component<Props, State> {
   }
 
   public async getArticles(isRefreshing: boolean = false) {
-    if ((!isRefreshing && this.state.noMore) || this.state.loadingMore) {
-      return;
+    try {
+      if ((!isRefreshing && this.state.noMore) || this.state.loadingMore) {
+        return;
+      }
+      await updateLoadingState(true);
+      await this.setState({ loadingMore: true });
+      const offset = isRefreshing ? 0 : this.state.articles.length;
+      let articles: Article[] = await getRequest(`/api/article?sort=-createdAt&count=10&offset=${offset}`);
+      const noMore = articles.length > 0 ? false : true;
+      if (!isRefreshing) {
+        articles = [...this.state.articles, ...articles];
+      }
+      this.setState({ articles, refreshing: false, noMore, loadingMore: false });
+    } finally {
+      await updateLoadingState(false);
     }
-    await this.setState({ loadingMore: true });
-    const offset = isRefreshing ? 0 : this.state.articles.length;
-    let articles: Article[] = await getRequest(`/api/article?sort=-createdAt&count=10&offset=${offset}`);
-    const noMore = articles.length > 0 ? false : true;
-    if (!isRefreshing) {
-      articles = [...this.state.articles, ...articles];
-    }
-    this.setState({ articles, refreshing: false, noMore, loadingMore: false });
   }
 
   public renderArticleItem(article: Article) {

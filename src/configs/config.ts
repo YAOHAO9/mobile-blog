@@ -5,7 +5,7 @@ export interface ConfigInterface {
   serverUrl: string;
 }
 
-const envConfig = !__DEV__ ? development : production;
+const envConfig = __DEV__ ? development : production;
 
 const Config: ConfigInterface = envConfig;
 export default Config;

@@ -1,8 +1,6 @@
 
 enum ActionType {
   UpdateAllUnreadMsgCount = 'UpdateAllUnreadMsgCount',
-  UpdateChatedUsers = 'UpdateChatedUsers',
-  UpdateChatList = 'UpdateChatList',
 }
 
 export interface ChatState {
@@ -24,12 +22,6 @@ const chatReducer = (state: ChatState = initChatState, action) => {
   switch (action.type) {
     case ActionType.UpdateAllUnreadMsgCount:
       state = Object.assign({}, state, { allUnreadMsgCount: action.allUnreadMsgCount });
-      return state;
-    case ActionType.UpdateChatedUsers:
-      state = Object.assign({}, state, { chatedUsers: action.chatedUsers });
-      return state;
-    case ActionType.UpdateChatList:
-      state = Object.assign({}, state, { chatList: action.chatList });
       return state;
     default:
       return state;

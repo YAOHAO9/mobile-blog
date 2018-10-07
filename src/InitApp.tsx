@@ -4,6 +4,7 @@ import { View } from 'react-native';
 import { ReduxConnect, combineMapStateToProps, combineMapDispatchToProps } from './redux/Store';
 import { mapChatStateToProps, mapChatDispatchToProps, ReduxChatProps } from './redux/ReduxChatHelper';
 import SocketService from './services/SocketService';
+import Loading from './components/Loading';
 
 @ReduxConnect(
   combineMapStateToProps([mapUserStateToProps, mapChatStateToProps]),
@@ -19,6 +20,7 @@ export default class InitApp extends React.Component<ReduxUserProps & ReduxChatP
     return (
       <View style={{ flex: 1 }}>
         {this.props.children}
+        <Loading></Loading>
       </View >
     );
   }

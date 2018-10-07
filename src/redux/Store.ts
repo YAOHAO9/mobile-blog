@@ -2,10 +2,12 @@ import { combineReducers, createStore } from 'redux';
 import userReducer from './ReduxUser';
 import { connect } from 'react-redux';
 import chatReducer from './ReduxChat';
+import globalSettingReducer from './ReduxGlobalSetting';
 
 const reducers = combineReducers({
   user: userReducer,
-  chat: chatReducer
+  chat: chatReducer,
+  globalSetting: globalSettingReducer
 });
 
 const store = createStore(reducers);

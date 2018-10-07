@@ -2,7 +2,7 @@ import * as React from 'react';
 import { getRequest } from '../services/RequestService';
 import Moment from '../models/Moment.model';
 import { View, Text, StyleSheet, FlatList, RefreshControl } from 'react-native';
-import { CachedImage } from 'react-native-img-cache';
+import { CachedImage, ImageCache } from 'react-native-img-cache';
 import Config from '../configs/config';
 import Avatar from '../components/Avatar';
 import Row from '../components/layout/Row';
@@ -16,6 +16,7 @@ import Blank from '../components/layout/Blank';
 import Page from '../components/layout/Page';
 import Header from '../components/Header';
 import { NavigationScreenProp } from 'react-navigation';
+import { updateLoadingState } from '../redux/ReduxGlobalSettingHelper';
 
 interface Props {
   navigation: NavigationScreenProp<null>;
@@ -30,10 +31,27 @@ interface State {
 
 export default class MomentPage extends React.Component<Props, State> {
 
+  public viewabilityConfig = {
+    minimumViewTime: 300,
+    viewAreaCoveragePercentThreshold: 10,
+    waitForInteraction: true,
+  };
+
   public constructor(props: Props) {
     super(props);
     this.state = { moments: [], refreshing: false, noMore: false, loadingMore: false };
   }
+
+  public onViewableItemsChanged = function (info) {
+    info.changed.forEach(changedItem => {
+      if (!changedItem.isViewable) {
+        const moment: Moment = changedItem.item;
+        moment.images.forEach(image => {
+          ImageCache.get().cancel(Config.serverUrl + '/api/archive/' + image);
+        });
+      }
+    });
+  };
 
   public componentWillMount() {
     this.getMoments();
@@ -56,6 +74,8 @@ export default class MomentPage extends React.Component<Props, State> {
           renderItem={(data) => this.renderMomentItem(data.item)}
           onEndReached={() => this.getMoments()}
           onEndReachedThreshold={0.3}
+          onViewableItemsChanged={this.onViewableItemsChanged}
+          viewabilityConfig={this.viewabilityConfig}
         >
         </FlatList>
       </Page>
@@ -63,20 +83,25 @@ export default class MomentPage extends React.Component<Props, State> {
   }
 
   public async getMoments(isRefreshing: boolean = false) {
-    if ((!isRefreshing && this.state.noMore) || this.state.loadingMore) {
-      return;
+    try {
+      if ((!isRefreshing && this.state.noMore) || this.state.loadingMore) {
+        return;
+      }
+      await updateLoadingState(true);
+      await this.setState({ loadingMore: true });
+      const offset = isRefreshing ? 0 : this.state.moments.length;
+      let moments: Moment[] = await getRequest(`/api/moment?sort=-createdAt&count=10&offset=${offset}`);
+      moments.forEach(moment => {
+        moment.content = moment.content.replace(/<br\/>/g, '\n').replace(/<.*?>/g, '');
+      });
+      const noMore = moments.length > 0 ? false : true;
+      if (!isRefreshing) {
+        moments = [...this.state.moments, ...moments];
+      }
+      this.setState({ moments, refreshing: false, noMore, loadingMore: false });
+    } finally {
+      await updateLoadingState(false);
     }
-    await this.setState({ loadingMore: true });
-    const offset = isRefreshing ? 0 : this.state.moments.length;
-    let moments: Moment[] = await getRequest(`/api/moment?sort=-createdAt&count=10&offset=${offset}`);
-    moments.forEach(moment => {
-      moment.content = moment.content.replace(/<br\/>/g, '\n').replace(/<.*?>/g, '');
-    });
-    const noMore = moments.length > 0 ? false : true;
-    if (!isRefreshing) {
-      moments = [...this.state.moments, ...moments];
-    }
-    this.setState({ moments, refreshing: false, noMore, loadingMore: false });
   }
 
   public renderMomentItem(moment: Moment) {

@@ -16,6 +16,7 @@ import { mapChatStateToProps, mapChatDispatchToProps, ReduxChatProps } from '../
 import ChatedUser from '../models/ChatedUser.model';
 import SocketService from '../services/SocketService';
 import Chat from '../models/Chat.model';
+import { updateLoadingState } from '../redux/ReduxGlobalSettingHelper';
 
 
 interface Props extends ReduxUserProps, ReduxChatProps {
@@ -163,21 +164,25 @@ export default class ChatPage extends React.Component<Props, State> {
   }
 
   public async getChatedUserList(isRefreshing: boolean = false) {
-    if ((!isRefreshing && this.state.noMore) || this.state.loadingMore) {
-      return;
+    try {
+      if ((!isRefreshing && this.state.noMore) || this.state.loadingMore) {
+        return;
+      }
+      await updateLoadingState(true);
+      await this.setState({ loadingMore: true });
+      let chatedUsers: ChatedUser[] = await getRequest(`/api/user/getChatedUserList?sort=-createdAt&count=10&offset=${0}&exclude=${this.getExclude(isRefreshing)}`);
+      const noMore = chatedUsers.length > 0 ? false : true;
+      await Promise.all(chatedUsers.map(async (chatedUser) => {
+        const unreadCount = await getRequest(`/api/chat/unreadMsgCount/${chatedUser.id}`);
+        chatedUser.unreadCount = unreadCount;
+      }));
+      if (!isRefreshing) {
+        chatedUsers = [...this.state.chatedUsers, ...chatedUsers];
+      }
+      this.setState({ refreshing: false, noMore, loadingMore: false, chatedUsers });
+    } finally {
+      await updateLoadingState(false);
     }
-    await this.setState({ loadingMore: true });
-    let chatedUsers: ChatedUser[] = await getRequest(`/api/user/getChatedUserList?sort=-createdAt&count=10&offset=${0}&exclude=${this.getExclude(isRefreshing)}`);
-    const noMore = chatedUsers.length > 0 ? false : true;
-    await Promise.all(chatedUsers.map(async (chatedUser) => {
-      const unreadCount = await getRequest(`/api/chat/unreadMsgCount/${chatedUser.id}`);
-      chatedUser.unreadCount = unreadCount;
-    }));
-    if (!isRefreshing) {
-      chatedUsers = [...this.state.chatedUsers, ...chatedUsers];
-    }
-    this.setState({ chatedUsers });
-    this.setState({ refreshing: false, noMore, loadingMore: false });
   }
 }
 
