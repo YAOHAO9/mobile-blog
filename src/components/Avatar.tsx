@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Image } from 'react-native';
 import Config from '../configs/config';
 import Archive from '../models/Archive.model';
 import { CachedImage } from 'react-native-img-cache';
@@ -17,7 +17,7 @@ export default class Avatar extends React.Component<Props> {
     const archive = this.props.archive;
     if (!archive || !archive.id) {
       return (
-        <CachedImage
+        <Image
           style={styles.avatar}
           source={require('../assets/images/widget_dface.png')}
         />
