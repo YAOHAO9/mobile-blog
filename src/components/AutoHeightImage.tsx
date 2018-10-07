@@ -1,7 +1,8 @@
 import * as React from 'react';
-import { Image } from 'react-native';
 import Config from '../configs/config';
 import Archive from '../models/Archive.model';
+import { CachedImage } from 'react-native-img-cache';
+import { Image } from 'react-native';
 
 interface Props {
   archive: Partial<Archive>;
@@ -21,7 +22,7 @@ export default class AutoHeightImage extends React.Component<Props, State> {
   public render() {
     const archive = this.props.archive;
     return (
-      <Image
+      <CachedImage
         style={{ height: this.state.containerHeight }}
         source={{ uri: `${Config.serverUrl}/api/archive/${archive.id}` }}
         onLayout={(event) => this.updateHeight(event)}

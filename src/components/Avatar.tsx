@@ -1,7 +1,8 @@
 import * as React from 'react';
-import { Image, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import Config from '../configs/config';
 import Archive from '../models/Archive.model';
+import { CachedImage } from 'react-native-img-cache';
 
 interface Props {
   archive?: Partial<Archive>;
@@ -16,14 +17,14 @@ export default class Avatar extends React.Component<Props> {
     const archive = this.props.archive;
     if (!archive || !archive.id) {
       return (
-        <Image
+        <CachedImage
           style={styles.avatar}
           source={require('../assets/images/widget_dface.png')}
         />
       );
     }
     return (
-      <Image
+      <CachedImage
         style={styles.avatar}
         source={{ uri: `${Config.serverUrl}/api/archive/${archive.id}` }}
       />

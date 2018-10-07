@@ -98,7 +98,13 @@ export default class ChatItem extends React.Component<Props> {
 
 
 const styles = StyleSheet.create({
-  date: { height: 20, backgroundColor: Colors.slightGray, paddingHorizontal: 10, lineHeight: 20, fontSize: 12 },
+  date: {
+    height: 20,
+    backgroundColor: Colors.slightGray,
+    paddingHorizontal: 10,
+    lineHeight: 20,
+    fontSize: 12
+  },
   name: { marginHorizontal: 10 },
   text: {
     fontSize: 12,

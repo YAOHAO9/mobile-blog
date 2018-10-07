@@ -2,6 +2,8 @@ PODS:
   - IQKeyboardManager (6.1.1)
   - React (0.57.0):
     - React/Core (= 0.57.0)
+  - react-native-fetch-blob (0.10.6):
+    - React/Core
   - react-native-image-picker (0.14.3):
     - React
   - React/Core (0.57.0):
@@ -36,6 +38,7 @@ PODS:
 
 DEPENDENCIES:
   - IQKeyboardManager
+  - react-native-fetch-blob (from `../node_modules/react-native-fetch-blob`)
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - React/Core (from `../node_modules/react-native`)
   - React/RCTActionSheet (from `../node_modules/react-native`)
@@ -57,6 +60,8 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   React:
     :path: "../node_modules/react-native"
+  react-native-fetch-blob:
+    :path: "../node_modules/react-native-fetch-blob"
   react-native-image-picker:
     :path: "../node_modules/react-native-image-picker"
   yoga:
@@ -65,9 +70,10 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   IQKeyboardManager: 79c57795f5c2408d259d37b9da2ed07efcbb5225
   React: 1fe0eb13d90b625d94c3b117c274dcfd2e760e11
+  react-native-fetch-blob: 63394b1d7b0781547b3e4463b3195790177b1222
   react-native-image-picker: b303e31c3c4ada1d7cb1342423d328d2efb07fb3
   yoga: b1ce48b6cf950b98deae82838f5173ea7cf89e85
 
-PODFILE CHECKSUM: ef31f43e6c22e2a46e80340f2e12977478e005c0
+PODFILE CHECKSUM: 9c8f115782b375e0d8709c293153479d35324dad
 
 COCOAPODS: 1.5.3
