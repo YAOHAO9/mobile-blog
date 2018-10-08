@@ -61,7 +61,15 @@ export default class ChatPage extends React.Component<Props, State> {
         SocketService.instance.registerUpdateListener((chat: Chat) => {
           const chatedUsers = this.state.chatedUsers;
           const chatedUser = chatedUsers.find(chatedUser => {
-            return chatedUser.id === chat.senderId || chatedUser.id === chat.receiverId;
+            if (chatedUser.id === chat.senderId) {
+              chatedUser.online = chat.sender.online;
+              return true;
+            }
+            if (chatedUser.id === chat.receiverId) {
+              chatedUser.online = chat.receiver.online;
+              return true;
+            }
+            return false;
           });
 
           if (chatedUser) {
@@ -150,7 +158,12 @@ export default class ChatPage extends React.Component<Props, State> {
             <Wrap margin={5}>
               <Avatar archive={{ id: user.avator }}></Avatar>
             </Wrap>
-            <Text style={styles.name}>{user.name}</Text>
+            <Col>
+              <Text>{user.name}</Text>
+              <Text style={{ fontSize: 10, color: user.online ? Colors.blue : Colors.lightGray }}>
+                {user.online ? '[在线]' : '[离线]'}
+              </Text>
+            </Col>
             {user.unreadCount !== 0 && <Text style={styles.unreadCount}>{user.unreadCount}</Text>}
             <Icon
               name='chevron-right'
@@ -190,7 +203,6 @@ export default class ChatPage extends React.Component<Props, State> {
 const styles = StyleSheet.create({
   header: { backgroundColor: Colors.white, borderRadius: 6, height: 40 },
   addUserText: { color: Colors.black },
-  name: { flex: 1 },
   unreadCount: {
     backgroundColor: Colors.warning,
     borderRadius: 10,

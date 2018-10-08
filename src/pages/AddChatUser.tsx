@@ -9,6 +9,7 @@ import Colors from '../variables/Colors';
 import User from '../models/User.model';
 import { getRequest } from '../services/RequestService';
 import { NavigationScreenProp } from 'react-navigation';
+import Col from '../components/layout/Col';
 
 interface Props {
   navigation: NavigationScreenProp<null, { title: string, exclude: string }>;
@@ -67,7 +68,12 @@ export default class AddChatUser extends React.Component<Props, State> {
             <Wrap margin={5}>
               <Avatar archive={{ id: user.avator }}></Avatar>
             </Wrap>
-            <Text style={{ flex: 1 }}>{user.name}</Text>
+            <Col>
+              <Text >{user.name}</Text>
+              <Text style={{ fontSize: 10, color: user.online ? Colors.blue : Colors.lightGray }}>
+                {user.online ? '[在线]' : '[离线]'}
+              </Text>
+            </Col>
             <Icon
               name='chevron-right'
               size={25}
