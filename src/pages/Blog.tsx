@@ -40,7 +40,7 @@ export default class BlogPage extends React.Component<Props, State> {
   public render() {
     return (
       <Page navigation={this.props.navigation} customHeader={true}>
-        <Header title={'Blog'}></Header>
+        <Header title={'Blog'} navigation={this.props.navigation}></Header>
         <FlatList
           style={{ marginVertical: 4 }}
           refreshControl={

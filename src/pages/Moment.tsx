@@ -60,7 +60,7 @@ export default class MomentPage extends React.Component<Props, State> {
   public render() {
     return (
       <Page navigation={this.props.navigation} customHeader={true}>
-        <Header title={'Moment'}></Header>
+        <Header title={'Moment'} navigation={this.props.navigation}></Header>
         <FlatList
           style={{ marginVertical: 4 }}
           refreshControl={

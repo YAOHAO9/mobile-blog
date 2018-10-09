@@ -63,4 +63,4 @@ buck-out/
 
 # test
 test.js
-test.te
+test.ts

@@ -100,7 +100,7 @@ export default class ChatPage extends React.Component<Props, State> {
   public render() {
     return (
       <Page navigation={this.props.navigation} customHeader={true}>
-        <Header title={'Chat'}></Header>
+        <Header title={'Chat'} navigation={this.props.navigation}></Header>
         <FlatList
           style={{ marginVertical: 4 }}
           refreshControl={
@@ -142,7 +142,7 @@ export default class ChatPage extends React.Component<Props, State> {
                 ></Icon>
               </Wrap>
 
-              <Text style={styles.addUserText}>Add a user who you want to chat with</Text>
+              <Text style={styles.addUserText}>选择您想要聊天的用户</Text>
             </Row>
           </View>
         </Col>

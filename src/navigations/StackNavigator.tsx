@@ -25,19 +25,27 @@ const RootNavigator = createStackNavigator(
     },
     BlogDetail,
     ChatDetail,
-    QrcodeScanner,
+    QrcodeScanner: {
+      screen: QrcodeScanner,
+      navigationOptions() {
+        return {
+          title: '扫码登入',
+          headerBackTitle: null,
+        };
+      }
+    },
     AddChatUser: {
       screen: AddChatUser,
       navigationOptions(): NavigationStackScreenOptions {
         return {
-          title: 'Add chat user',
+          title: '选择您想要聊天的用户',
           headerBackTitle: null,
         };
       }
     }
   },
   {
-    initialRouteName: 'QrcodeScanner'
+    initialRouteName: 'Tab'
   });
 
 export default RootNavigator;
