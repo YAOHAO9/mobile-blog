@@ -28,6 +28,8 @@ target 'MobileBlog' do
 
   pod 'react-native-fetch-blob', :path => '../node_modules/react-native-fetch-blob'
 
+  pod 'react-native-camera', :path => '../node_modules/react-native-camera'
+
   target 'MobileBlogTests' do
     inherit! :search_paths
     # Pods for testing

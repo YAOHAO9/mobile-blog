@@ -7,6 +7,7 @@ import Tab from './TabNavigator';
 import BlogDetail from '../pages/BlogDetail';
 import ChatDetail from '../pages/ChatDetail';
 import AddChatUser from '../pages/AddChatUser';
+import QrcodeScanner from '../pages/QrcodeScanner';
 
 const RootNavigator = createStackNavigator(
   {
@@ -24,6 +25,7 @@ const RootNavigator = createStackNavigator(
     },
     BlogDetail,
     ChatDetail,
+    QrcodeScanner,
     AddChatUser: {
       screen: AddChatUser,
       navigationOptions(): NavigationStackScreenOptions {
@@ -35,7 +37,7 @@ const RootNavigator = createStackNavigator(
     }
   },
   {
-    initialRouteName: 'Tab'
+    initialRouteName: 'QrcodeScanner'
   });
 
 export default RootNavigator;
