@@ -2,21 +2,15 @@ import {
   createStackNavigator, NavigationStackScreenOptions,
 } from 'react-navigation';
 
-import HomeScreen from '../components/HomeScreen';
 import Tab from './TabNavigator';
 import BlogDetail from '../pages/BlogDetail';
 import ChatDetail from '../pages/ChatDetail';
 import AddChatUser from '../pages/AddChatUser';
 import QrcodeScanner from '../pages/QrcodeScanner';
+import ImageGallery from '../pages/ImageGallery';
 
 const RootNavigator = createStackNavigator(
   {
-    Home: {
-      screen: HomeScreen,
-      navigationOptions() {
-        return { title: 'Home' };
-      }
-    },
     Tab: {
       screen: Tab,
       navigationOptions() {
@@ -25,6 +19,15 @@ const RootNavigator = createStackNavigator(
     },
     BlogDetail,
     ChatDetail,
+    ImageGallery: {
+      screen: ImageGallery,
+      navigationOptions() {
+        return {
+          title: '浏览图片',
+          headerBackTitle: null,
+        };
+      }
+    },
     QrcodeScanner: {
       screen: QrcodeScanner,
       navigationOptions() {

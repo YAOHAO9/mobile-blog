@@ -19,7 +19,7 @@ interface State {
 export default class BlogDetail extends React.Component<Props, State> {
   static navigationOptions = ({ navigation }) => {
     return {
-      title: navigation.getParam('title', 'Blog detail'),
+      title: navigation.getParam('title', 'Blog 详情'),
     };
   }
   private webView: WebView = null;

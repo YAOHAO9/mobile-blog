@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { getRequest } from '../services/RequestService';
 import Moment from '../models/Moment.model';
-import { View, Text, StyleSheet, FlatList, RefreshControl } from 'react-native';
+import { View, Text, StyleSheet, FlatList, RefreshControl, TouchableOpacity } from 'react-native';
 import { CachedImage, ImageCache } from 'react-native-img-cache';
 import Config from '../configs/config';
 import Avatar from '../components/Avatar';
@@ -165,13 +165,13 @@ export default class MomentPage extends React.Component<Props, State> {
       }
       imageRows.push(row);
     }
-    return imageRows.map((row) => {
+    const grid = imageRows.map((row) => {
       return (
-        <Row key={row} >
+        <Row key={'row: ' + row} >
           {
             row.map((column, index) => {
               if (!column) {
-                return (<Blank key={index}></Blank>);
+                return (<Blank key={'column: ' + index}></Blank>);
               }
               return (
                 <Square key={column} paddingPercent={2}>
@@ -188,7 +188,13 @@ export default class MomentPage extends React.Component<Props, State> {
         </Row>
       );
     });
+    return (
+      <TouchableOpacity onPress={() => this.props.navigation.navigate('ImageGallery', { images: JSON.stringify(moment.images) })}>
+        {grid}
+      </TouchableOpacity>
+    );
   }
+
 }
 
 const styles = StyleSheet.create({

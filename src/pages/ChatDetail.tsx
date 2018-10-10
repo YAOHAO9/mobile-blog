@@ -41,7 +41,7 @@ export default class ChatDetail extends React.Component<Props, State> {
   public flatList: FlatList<Chat>;
   static navigationOptions = ({ navigation }) => {
     return {
-      title: navigation.getParam('title', 'Chat detail'),
+      title: navigation.getParam('title', '聊天'),
     };
   }
   public constructor(props: Props) {
