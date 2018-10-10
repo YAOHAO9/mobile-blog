@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 
 interface Props {
   paddingPercent?: number;
@@ -21,13 +21,11 @@ export default class Square extends React.Component<Props, State> {
   public render() {
     return (
       <View
-        style={{
-          flex: 1,
+        style={[styles.square, {
           height: this.state.height,
           padding: this.state.padding,
           borderRadius: this.state.borderRadius,
-          overflow: 'hidden'
-        }}
+        }]}
         onLayout={(event) => {
           let { paddingPercent, borderRadiusPercent } = this.props;
           if (!paddingPercent || paddingPercent < 0) {
@@ -60,3 +58,10 @@ export default class Square extends React.Component<Props, State> {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  square: {
+    flex: 1,
+    overflow: 'hidden'
+  }
+});

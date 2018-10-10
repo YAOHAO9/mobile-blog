@@ -3,7 +3,7 @@ import Page from '../components/layout/Page';
 import Wrap from '../components/layout/Wrap';
 import Row from '../components/layout/Row';
 import Avatar from '../components/Avatar';
-import { Text, FlatList, RefreshControl, TouchableOpacity } from 'react-native';
+import { Text, FlatList, RefreshControl, TouchableOpacity, StyleSheet } from 'react-native';
 import Icon from '../components/Icon';
 import Colors from '../variables/Colors';
 import User from '../models/User.model';
@@ -70,7 +70,7 @@ export default class AddChatUser extends React.Component<Props, State> {
             </Wrap>
             <Col>
               <Text >{user.name}</Text>
-              <Text style={{ fontSize: 10, color: user.online ? Colors.blue : Colors.lightGray }}>
+              <Text style={[styles.onlineText, { color: user.online ? Colors.blue : Colors.lightGray }]}>
                 {user.online ? '[在线]' : '[离线]'}
               </Text>
             </Col>
@@ -101,3 +101,7 @@ export default class AddChatUser extends React.Component<Props, State> {
   }
 }
 
+
+const styles = StyleSheet.create({
+  onlineText: { fontSize: 10 }
+});

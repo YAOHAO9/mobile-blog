@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ActivityIndicator, View } from 'react-native';
+import { ActivityIndicator, View, StyleSheet } from 'react-native';
 import Row from './layout/Row';
 import Colors from '../variables/Colors';
 import ReduxGlobalConnect, { ReduxGlobalSettingProps } from '../redux/ReduxGlobalSettingHelper';
@@ -18,15 +18,7 @@ export default class Loading extends React.Component<Props> {
       return null;
     }
     return (
-      <View style={{
-        position: 'absolute',
-        zIndex: 99,
-        backgroundColor: '#0004',
-        top: 0,
-        bottom: 0,
-        left: 0,
-        right: 0,
-      }}>
+      <View style={styles.loading}>
         <Row>
           <ActivityIndicator color={Colors.blue}></ActivityIndicator>
         </Row>
@@ -34,3 +26,15 @@ export default class Loading extends React.Component<Props> {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  loading: {
+    position: 'absolute',
+    zIndex: 99,
+    backgroundColor: '#0004',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+  }
+});

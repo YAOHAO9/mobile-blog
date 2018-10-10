@@ -4,7 +4,7 @@ import Page from '../components/layout/Page';
 import User from '../models/User.model';
 import { NavigationScreenProp } from 'react-navigation';
 import ChatItem from '../components/ChatItem';
-import { FlatList, RefreshControl, TextInput, TouchableOpacity, Text, Alert } from 'react-native';
+import { FlatList, RefreshControl, TextInput, TouchableOpacity, Text, Alert, StyleSheet } from 'react-native';
 import Chat from '../models/Chat.model';
 import { ReduxUserProps, mapUserStateToProps, mapUserDispatchToProps } from '../redux/ReduxUserHelper';
 import { ReduxChatProps, mapChatStateToProps, mapChatDispatchToProps } from '../redux/ReduxChatHelper';
@@ -127,6 +127,7 @@ export default class ChatDetail extends React.Component<Props, State> {
   public async sendImage() {
     const options = {
       title: '选择您想发送的图片',
+      maxWidth: 1000,
       storageOptions: {
         skipBackup: true,
         path: 'images'
@@ -180,14 +181,7 @@ export default class ChatDetail extends React.Component<Props, State> {
         </FlatList>
         <Row flex={undefined} margin={5}>
           <TouchableOpacity
-            style={{
-              height: 30,
-              paddingHorizontal: 15,
-              borderRadius: 6,
-              overflow: 'hidden',
-              marginHorizontal: 5,
-              backgroundColor: Colors.white,
-            }}
+            style={styles.sendImageBtn}
             onPress={() => this.sendImage()}>
             <Wrap paddingVertical={3}>
               <Icon
@@ -199,15 +193,7 @@ export default class ChatDetail extends React.Component<Props, State> {
             </Wrap>
           </TouchableOpacity>
           <TextInput
-            style={{
-              flex: 1,
-              padding: 0,
-              backgroundColor: Colors.white,
-              height: 30,
-              paddingHorizontal: 15,
-              borderRadius: 6,
-              overflow: 'hidden',
-            }}
+            style={styles.textImput}
             underlineColorAndroid='transparent'
             keyboardType={'default'}
             onSubmitEditing={() => this.sumbit()}
@@ -217,19 +203,9 @@ export default class ChatDetail extends React.Component<Props, State> {
             onChangeText={(text) => this.setState({ sendMsg: text })}
           />
           <TouchableOpacity
-            style={{
-              height: 30,
-              paddingHorizontal: 15,
-              borderRadius: 6,
-              overflow: 'hidden',
-              marginHorizontal: 5,
-              backgroundColor: Colors.white,
-            }}
+            style={styles.sendTextBtn}
             onPress={() => this.sumbit()}>
-            <Text style={{
-              color: Colors.gray,
-              lineHeight: 30
-            }}>发送</Text>
+            <Text style={styles.sendTextBtnText}>发送</Text>
           </TouchableOpacity>
         </Row>
       </Page>
@@ -237,4 +213,34 @@ export default class ChatDetail extends React.Component<Props, State> {
   }
 }
 
-
+const styles = StyleSheet.create({
+  sendImageBtn: {
+    height: 30,
+    paddingHorizontal: 15,
+    borderRadius: 6,
+    overflow: 'hidden',
+    marginHorizontal: 5,
+    backgroundColor: Colors.white,
+  },
+  textImput: {
+    flex: 1,
+    padding: 0,
+    backgroundColor: Colors.white,
+    height: 30,
+    paddingHorizontal: 15,
+    borderRadius: 6,
+    overflow: 'hidden',
+  },
+  sendTextBtn: {
+    height: 30,
+    paddingHorizontal: 15,
+    borderRadius: 6,
+    overflow: 'hidden',
+    marginHorizontal: 5,
+    backgroundColor: Colors.white,
+  },
+  sendTextBtnText: {
+    color: Colors.gray,
+    lineHeight: 30
+  }
+});

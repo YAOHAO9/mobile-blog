@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Row from './layout/Row';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import Colors from '../variables/Colors';
 import Avatar from './Avatar';
 import ReduxUserConnect, { ReduxUserProps } from '../redux/ReduxUserHelper';
@@ -22,11 +22,11 @@ export default class Header extends React.Component<Props> {
 
   public render() {
     return (
-      <View style={{ height: 48, backgroundColor: Colors.headerBgColor, paddingHorizontal: 10, position: 'relative' }}>
+      <View style={styles.headerWrapper}>
         <Row>
           {this.renderLeft()}
           <View style={{ flex: 1 }}>
-            <View style={{ position: 'absolute', top: 0, bottom: 0, right: 0, left: 0, zIndex: 1 }}>
+            <View style={styles.headerCenter}>
               <Row>
                 {this.renderCenter()}
               </Row>
@@ -50,7 +50,7 @@ export default class Header extends React.Component<Props> {
     if (this.props.center) {
       return this.props.center;
     } else {
-      return <Text style={{ flex: 1, textAlign: 'center', fontSize: 20, color: Colors.black, alignSelf: 'center' }}>{this.props.title}</Text>;
+      return <Text style={styles.headerCenterText}>{this.props.title}</Text>;
     }
   }
 
@@ -60,11 +60,7 @@ export default class Header extends React.Component<Props> {
     } else {
       return (
         <TouchableOpacity onPress={() => this.props.navigation.push('QrcodeScanner')}>
-          <View style={{
-            height: 36,
-            width: 36,
-            padding: 6
-          }}>
+          <View style={styles.headerRightIconParent}>
             <Icon
               name={'qrcode-scan'}
               size={24}
@@ -76,3 +72,14 @@ export default class Header extends React.Component<Props> {
     }
   }
 }
+
+const styles = StyleSheet.create({
+  headerWrapper: { height: 48, backgroundColor: Colors.headerBgColor, paddingHorizontal: 10, position: 'relative' },
+  headerCenter: { position: 'absolute', top: 0, bottom: 0, right: 0, left: 0, zIndex: 1 },
+  headerCenterText: { flex: 1, textAlign: 'center', fontSize: 20, color: Colors.black, alignSelf: 'center' },
+  headerRightIconParent: {
+    height: 36,
+    width: 36,
+    padding: 6
+  }
+});

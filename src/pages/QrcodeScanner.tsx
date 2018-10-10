@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Text, Alert, TouchableOpacity, View } from 'react-native';
+import { Text, Alert, TouchableOpacity, View, StyleSheet } from 'react-native';
 import { QRScannerView } from 'ac-qrcode-rn';
 import urlParse from 'url-parse';
 import { parse as parseQuery } from 'query-string';
@@ -161,7 +161,7 @@ export default class QrcodeScanner extends React.Component<Props, State> {
             isVisible={this.state.showQrcodeScanner}
             onBackButtonPress={() => this.setState({ showQrcodeScanner: false })}
             onBackdropPress={() => this.setState({ showQrcodeScanner: false })}
-            style={{ overflow: 'hidden', borderRadius: 10 }}
+            style={styles.qrcodeModal}
           >
             {this.renderCloseModalButton()}
             <QRScannerView
@@ -175,3 +175,7 @@ export default class QrcodeScanner extends React.Component<Props, State> {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  qrcodeModal: { overflow: 'hidden', borderRadius: 10 }
+});

@@ -57,7 +57,7 @@ const Tab = createBottomTabNavigator(
     },
   },
   {
-    initialRouteName: 'Chat',
+    initialRouteName: 'Moment',
     animationEnabled: true,
     swipeEnabled: true,
   }

@@ -160,7 +160,7 @@ export default class ChatPage extends React.Component<Props, State> {
             </Wrap>
             <Col>
               <Text>{user.name}</Text>
-              <Text style={{ fontSize: 10, color: user.online ? Colors.blue : Colors.lightGray }}>
+              <Text style={[styles.onlineText, { color: user.online ? Colors.blue : Colors.lightGray }]}>
                 {user.online ? '[在线]' : '[离线]'}
               </Text>
             </Col>
@@ -212,6 +212,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: Colors.white,
     textAlign: 'center',
-    overflow: 'hidden'
-  }
+    overflow: 'hidden',
+  },
+  onlineText: { fontSize: 10 }
 });

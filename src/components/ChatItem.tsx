@@ -69,7 +69,7 @@ export default class ChatItem extends React.Component<Props> {
     if (chat.type !== 'image')
       return undefined;
     return (
-      <View style={{ borderRadius: 10, overflow: 'hidden' }}>
+      <View style={styles.imageParent}>
         <AutoHeightImage archive={{ id: +chat.img }}></AutoHeightImage>
       </View>
     );
@@ -98,6 +98,9 @@ export default class ChatItem extends React.Component<Props> {
 
 
 const styles = StyleSheet.create({
+  imageParent: {
+    borderRadius: 10, overflow: 'hidden'
+  },
   date: {
     height: 20,
     backgroundColor: Colors.slightGray,
