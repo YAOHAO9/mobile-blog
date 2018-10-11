@@ -3,6 +3,7 @@ import Gallery from 'react-native-image-gallery';
 import Config from '../configs/config';
 import { NavigationScreenProp } from 'react-navigation';
 import Page from '../components/layout/Page';
+import Colors from '../variables/Colors';
 
 interface Props {
   navigation: NavigationScreenProp<null>;
@@ -23,7 +24,7 @@ export default class ImageGallery extends React.Component<Props, State> {
     return (
       <Page navigation={this.props.navigation} customHeader={false}>
         <Gallery
-          style={{ flex: 1, backgroundColor: 'black' }}
+          style={{ flex: 1, backgroundColor: Colors.slightGray }}
           images={this.state.images.map(image => {
             return { source: { uri: `${Config.serverUrl}/api/archive/${image}` } };
           })}
