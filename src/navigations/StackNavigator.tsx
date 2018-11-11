@@ -8,6 +8,7 @@ import ChatDetail from '../pages/ChatDetail';
 import AddChatUser from '../pages/AddChatUser';
 import QrcodeScanner from '../pages/QrcodeScanner';
 import ImageGallery from '../pages/ImageGallery';
+import Profile from '../pages/Profile';
 
 const RootNavigator = createStackNavigator(
   {
@@ -33,6 +34,15 @@ const RootNavigator = createStackNavigator(
       navigationOptions() {
         return {
           title: '扫码登入',
+          headerBackTitle: null,
+        };
+      }
+    },
+    Profile: {
+      screen: Profile,
+      navigationOptions() {
+        return {
+          title: '个人简介',
           headerBackTitle: null,
         };
       }

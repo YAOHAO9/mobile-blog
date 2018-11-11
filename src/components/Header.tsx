@@ -42,7 +42,11 @@ export default class Header extends React.Component<Props> {
     if (this.props.left) {
       return this.props.left;
     } else {
-      return (<Avatar archive={{ id: this.props.user.avator }}></Avatar>);
+      return (
+        <TouchableOpacity onPress={() => this.props.navigation.push('Profile')}>
+          <Avatar archive={{ id: this.props.user.avator }}></Avatar>
+        </TouchableOpacity>
+      );
     }
   }
 

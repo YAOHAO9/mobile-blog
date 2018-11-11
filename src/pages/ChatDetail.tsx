@@ -199,7 +199,7 @@ export default class ChatDetail extends React.Component<Props, State> {
             onSubmitEditing={() => this.sumbit()}
             enablesReturnKeyAutomatically={true}
             value={this.state.sendMsg}
-            placeholder='Type here to translate!'
+            placeholder='请输入您想要发送的文字!'
             onChangeText={(text) => this.setState({ sendMsg: text })}
           />
           <TouchableOpacity
