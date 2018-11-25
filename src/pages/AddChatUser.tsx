@@ -60,7 +60,6 @@ export default class AddChatUser extends React.Component<Props, State> {
   }
 
   public renderUserItem(user: User) {
-    this.props.navigation.getParam('title');
     return (
       <TouchableOpacity onPress={() => this.props.navigation.navigate('ChatDetail', { userId: user.id })}>
         <Wrap backgroundColor={Colors.white} borderRadius={6} marginTop={2}>

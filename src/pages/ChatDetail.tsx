@@ -12,9 +12,9 @@ import { ReduxConnect, combineMapStateToProps, combineMapDispatchToProps } from 
 import Row from '../components/layout/Row';
 import Colors from '../variables/Colors';
 import SocketService from '../services/SocketService';
-import * as ImagePicker from 'react-native-image-picker';
 import Icon from '../components/Icon';
 import Wrap from '../components/layout/Wrap';
+import { selectImage } from '../services/ImageService';
 
 
 interface Props extends ReduxUserProps, ReduxChatProps {
@@ -110,7 +110,7 @@ export default class ChatDetail extends React.Component<Props, State> {
     this.setState({ refreshing: false, loading: false });
   }
 
-  public sumbit() {
+  public submit() {
     if (this.state.sendMsg.trim() === '') {
       Alert.alert('请说些什么吧');
       return;
@@ -125,32 +125,16 @@ export default class ChatDetail extends React.Component<Props, State> {
   }
 
   public async sendImage() {
-    const options = {
-      title: '选择您想发送的图片',
-      maxWidth: 1000,
-      storageOptions: {
-        skipBackup: true,
-        path: 'images'
-      }
-    };
-
-    ImagePicker.launchImageLibrary(options, async (response) => {
-      if (response.didCancel) {
-        return;
-      }
-      if (response.error) {
-        return;
-      }
-      if (response.customButton) {
-        return;
-      }
-      const formData = new FormData();
-      formData.append('session', this.state.session);
-      formData.append('senderId', this.state.selfId);
-      formData.append('receiverId', this.state.receiverId);
-      formData.append('image', { uri: response.uri, type: 'multipart/form-data', name: 'image.png' });
-      await postRequest('/api/chat/sendImage', formData);
-    });
+    const res = await selectImage({ title: '选择您要发送的图片' });
+    if (res.didCancel || res.error || res.customButton) {
+      return;
+    }
+    const formData = new FormData();
+    formData.append('session', this.state.session);
+    formData.append('senderId', this.state.selfId);
+    formData.append('receiverId', this.state.receiverId);
+    formData.append('image', { uri: res.uri, type: 'multipart/form-data', name: 'image.png' });
+    await postRequest('/api/chat/sendImage', formData);
   }
   public render() {
     const chatList = this.state.chatList;
@@ -193,10 +177,10 @@ export default class ChatDetail extends React.Component<Props, State> {
             </Wrap>
           </TouchableOpacity>
           <TextInput
-            style={styles.textImput}
+            style={styles.textInput}
             underlineColorAndroid='transparent'
             keyboardType={'default'}
-            onSubmitEditing={() => this.sumbit()}
+            onSubmitEditing={() => this.submit()}
             enablesReturnKeyAutomatically={true}
             value={this.state.sendMsg}
             placeholder='请输入您想要发送的文字!'
@@ -204,7 +188,7 @@ export default class ChatDetail extends React.Component<Props, State> {
           />
           <TouchableOpacity
             style={styles.sendTextBtn}
-            onPress={() => this.sumbit()}>
+            onPress={() => this.submit()}>
             <Text style={styles.sendTextBtnText}>发送</Text>
           </TouchableOpacity>
         </Row>
@@ -222,7 +206,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
     backgroundColor: Colors.white,
   },
-  textImput: {
+  textInput: {
     flex: 1,
     padding: 0,
     backgroundColor: Colors.white,

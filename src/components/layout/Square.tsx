@@ -40,6 +40,10 @@ export default class Square extends React.Component<Props, State> {
           if (borderRadiusPercent > 100) {
             borderRadiusPercent = 100;
           }
+          if (this.state.height !== 0) {
+            // 避免抖动
+            return;
+          }
 
           let width = event.nativeEvent.layout.width;
           const height = width;

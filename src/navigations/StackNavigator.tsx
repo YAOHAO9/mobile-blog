@@ -9,6 +9,7 @@ import AddChatUser from '../pages/AddChatUser';
 import QrcodeScanner from '../pages/QrcodeScanner';
 import ImageGallery from '../pages/ImageGallery';
 import Profile from '../pages/Profile';
+import AddMoment from '../pages/AddMoment';
 
 const RootNavigator = createStackNavigator(
   {
@@ -43,6 +44,15 @@ const RootNavigator = createStackNavigator(
       navigationOptions() {
         return {
           title: '个人简介',
+          headerBackTitle: null,
+        };
+      }
+    },
+    AddMoment: {
+      screen: AddMoment,
+      navigationOptions() {
+        return {
+          title: '分享美好瞬间',
           headerBackTitle: null,
         };
       }
