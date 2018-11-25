@@ -2,13 +2,12 @@ import * as React from 'react';
 import Page from '../components/layout/Page';
 import Wrap from '../components/layout/Wrap';
 import Row from '../components/layout/Row';
-import { Text, TouchableOpacity, StyleSheet, TextInput, ScrollView } from 'react-native';
+import { Text, TouchableOpacity, StyleSheet, TextInput, ScrollView, Image } from 'react-native';
 import Colors from '../variables/Colors';
 import { postRequest } from '../services/RequestService';
 import { NavigationScreenProp } from 'react-navigation';
 import Col from '../components/layout/Col';
 import { selectImage } from '../services/ImageService';
-import { CachedImage } from 'react-native-img-cache';
 
 interface Props {
   navigation: NavigationScreenProp<null>;
@@ -19,7 +18,6 @@ interface State {
   rows: [][];
 }
 export default class AddMoment extends React.Component<Props, State> {
-
   images = [{ type: 'addBtn', uri: '', itemIndex: 9 }];
 
   constructor(props: Props) {
@@ -96,14 +94,14 @@ export default class AddMoment extends React.Component<Props, State> {
         }}
       >
         <Wrap padding={2} >
-          {item.type === 'addBtn' && <CachedImage
+          {item.type === 'addBtn' && <Image
             key={item.itemIndex}
-            style={{ width: 70, height: 70, resizeMode: 'stretch' }}
+            style={{ width: 70, height: 70, resizeMode: 'cover' }}
             source={require('../assets/images/add.png')}
           />}
-          {item.type === 'image' && <CachedImage
+          {item.type === 'image' && <Image
             key={item.itemIndex}
-            style={{ width: 70, height: 70, resizeMode: 'stretch' }}
+            style={{ width: 70, height: 70, resizeMode: 'cover' }}
             source={{ uri: item.uri }}
           />}
         </Wrap>

@@ -30,7 +30,7 @@ interface State {
 }
 
 export default class MomentPage extends React.Component<Props, State> {
-
+  public willFocusListener;
   public viewabilityConfig = {
     minimumViewTime: 300,
     viewAreaCoveragePercentThreshold: 10,
@@ -55,12 +55,24 @@ export default class MomentPage extends React.Component<Props, State> {
 
   public componentWillMount() {
     this.getMoments();
+    this.willFocusListener = this.props.navigation.addListener('didFocus',
+      () => {
+        this.getMoments(true);
+      });
+  }
+
+  public componentWillUnmount() {
+    this.willFocusListener && this.willFocusListener.remove();
   }
 
   public render() {
     return (
       <Page navigation={this.props.navigation} customHeader={true}>
-        <Header title={'Moment'} navigation={this.props.navigation}></Header>
+        <Header
+          title={'Moment'}
+          onTitlePress={() => this.props.navigation.navigate('AddMoment')}
+          navigation={this.props.navigation}
+        ></Header>
         <FlatList
           style={{ marginVertical: 4 }}
           refreshControl={

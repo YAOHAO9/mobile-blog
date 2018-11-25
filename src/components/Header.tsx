@@ -6,12 +6,14 @@ import Avatar from './Avatar';
 import ReduxUserConnect, { ReduxUserProps } from '../redux/ReduxUserHelper';
 import Icon from './Icon';
 import { NavigationScreenProp } from 'react-navigation';
+import Wrap from './layout/Wrap';
 
 interface Props extends ReduxUserProps {
   left?: any;
   center?: any;
   right?: any;
   title?: string;
+  onTitlePress?: Function;
   navigation: NavigationScreenProp<null>;
 }
 @ReduxUserConnect
@@ -25,13 +27,13 @@ export default class Header extends React.Component<Props> {
       <View style={styles.headerWrapper}>
         <Row>
           {this.renderLeft()}
-          <View style={{ flex: 1 }}>
+          <Wrap height={48} flex={1}>
             <View style={styles.headerCenter}>
-              <Row>
+              <TouchableOpacity style={{ flex: 1 }} onPress={() => this.props.onTitlePress && this.props.onTitlePress()}>
                 {this.renderCenter()}
-              </Row>
+              </TouchableOpacity>
             </View>
-          </View>
+          </Wrap>
           {this.renderRight()}
         </Row>
       </View>
@@ -80,7 +82,7 @@ export default class Header extends React.Component<Props> {
 const styles = StyleSheet.create({
   headerWrapper: { height: 48, backgroundColor: Colors.headerBgColor, paddingHorizontal: 10, position: 'relative' },
   headerCenter: { position: 'absolute', top: 0, bottom: 0, right: 0, left: 0, zIndex: 1 },
-  headerCenterText: { flex: 1, textAlign: 'center', fontSize: 20, color: Colors.black, alignSelf: 'center' },
+  headerCenterText: { flex: 1, height: 48, lineHeight: 48, textAlign: 'center', fontSize: 20, color: Colors.black, alignSelf: 'center' },
   headerRightIconParent: {
     height: 36,
     width: 36,

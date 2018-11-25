@@ -1,10 +1,9 @@
 import * as React from 'react';
-import { TextInput, StyleSheet, Text, TouchableOpacity, Alert } from 'react-native';
+import { TextInput, StyleSheet, Text, TouchableOpacity, Alert, Image } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
 import ReduxUserConnect, { ReduxUserProps } from '../redux/ReduxUserHelper';
 import Row from '../components/layout/Row';
 import Page from '../components/layout/Page';
-import Avatar from '../components/Avatar';
 import Col from '../components/layout/Col';
 import Colors from '../variables/Colors';
 import Button from '../components/Button';
@@ -12,6 +11,7 @@ import Wrap from '../components/layout/Wrap';
 import { postRequest } from '../services/RequestService';
 import User from '../models/User.model';
 import { selectImage } from '../services/ImageService';
+import Config from '../configs/config';
 
 interface Props extends ReduxUserProps {
   navigation: NavigationScreenProp<null>;
@@ -31,7 +31,7 @@ export default class Profile extends React.Component<Props, State> {
     this.state = {
       name: props.user.name,
       avator: props.user.avator,
-      uri: ''
+      uri: this.props.user.avator ? `${Config.serverUrl}/api/archive/${this.props.user.avator}` : ''
     };
   }
 
@@ -47,9 +47,9 @@ export default class Profile extends React.Component<Props, State> {
     formData.append('name', this.state.name);
     this.state.uri && formData.append('avator', { uri: this.state.uri, type: 'multipart/form-data', name: 'image.png' });
     const user: User = await postRequest(`/api/user/update/${this.props.user.id}`, formData);
-    Alert.alert('保存成功');
     this.props.updateUser(user);
-    this.setState({ uri: '' });
+    Alert.alert('保存成功');
+    this.props.navigation.navigate('Tab');
   }
 
   public async selectAvator() {
@@ -67,13 +67,14 @@ export default class Profile extends React.Component<Props, State> {
         <Wrap height={100}></Wrap>
         <Col flex={undefined} alignItems={'center'}>
           <TouchableOpacity onPress={() => this.selectAvator()}>
-            <Avatar
-              archive={{ id: this.state.avator }}
-              width={100}
-              height={100}
-              borderRadius={50}
-              uri={this.state.uri}
-            ></Avatar>
+            {this.state.uri === '' && <Image
+              style={{ width: 100, height: 100, borderRadius: 50, resizeMode: 'cover' }}
+              source={require('../assets/images/widget_dface.png')}
+            />}
+            {this.state.uri !== '' && <Image
+              style={{ width: 100, height: 100, borderRadius: 50, resizeMode: 'cover' }}
+              source={{ uri: this.state.uri }}
+            />}
           </TouchableOpacity>
           <Text style={{ fontSize: 14, marginTop: 20, color: Colors.gray }}>点击修改头像</Text>
         </Col>
